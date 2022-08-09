@@ -12,8 +12,7 @@ import java.util.Set;
 @Repository
 public interface WorkspaceRepository extends JpaRepository<Workspace, Integer> {
 
-    /*  Finds all teams that belong to a certain workspace.
+    //  Finds all teams that belong to a certain workspace.
     @Query("SELECT t FROM Team t WHERE t.workspace.id = :workspace_id")
     Set<Team> findTeamsOfWorkspace(@Param("workspace_id") Integer workspace_id);
-    */
 }
