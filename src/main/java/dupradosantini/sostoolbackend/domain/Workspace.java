@@ -1,22 +1,20 @@
 package dupradosantini.sostoolbackend.domain;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.*;
 import org.hibernate.validator.constraints.Length;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
 import java.io.Serializable;
 import java.util.Objects;
+import java.util.Set;
 
 @Entity
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@ToString
 public class Workspace implements Serializable {
     private static final long serialVersionUID = 1L;
 
@@ -31,9 +29,18 @@ public class Workspace implements Serializable {
     @Length(max=2000, message = "Workspace description can have at most 2000 characters")
     private String description;
 
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "workspace")
+    @JsonManagedReference(value = "workspace-team")
+    private Set<Team> teams;
+
     //null description constructor.
     public Workspace(String name) {
         this.name = name;
+    }
+
+    public Workspace(String name, String description){
+        this.name = name;
+        this.description = description;
     }
 
     @Override

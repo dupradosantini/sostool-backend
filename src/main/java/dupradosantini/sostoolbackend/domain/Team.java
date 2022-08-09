@@ -1,12 +1,10 @@
 package dupradosantini.sostoolbackend.domain;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.*;
 import org.hibernate.validator.constraints.Length;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
 import java.io.Serializable;
 import java.util.Objects;
@@ -30,8 +28,13 @@ public class Team implements Serializable {
     @Length(min = 3, max = 100, message = "Team name has to have between 3 and 100 characters")
     private String name;
 
-    public Team(String name) {
+    @ManyToOne(optional = false)
+    @JsonBackReference(value = "workspace-team")
+    private Workspace workspace;
+
+    public Team(String name, Workspace workspace) {
         this.name = name;
+        this.workspace = workspace;
     }
 
     @Override
@@ -39,11 +42,11 @@ public class Team implements Serializable {
         if (this == o) return true;
         if (!(o instanceof Team)) return false;
         Team team = (Team) o;
-        return getId().equals(team.getId()) && getName().equals(team.getName());
+        return getId().equals(team.getId()) && getName().equals(team.getName()) && getWorkspace().equals(team.getWorkspace());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getId(), getName());
+        return Objects.hash(getId(), getName(), getWorkspace());
     }
 }
