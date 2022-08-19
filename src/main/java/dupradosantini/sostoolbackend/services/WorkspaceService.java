@@ -12,4 +12,8 @@ public interface WorkspaceService {
     List<Workspace> findAll();
 
     Set<Team> findTeams(Integer id);
+
+    Workspace create(Workspace obj);
+
+    void delete(Integer id);
 }

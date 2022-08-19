@@ -32,8 +32,21 @@ public class WorkspaceServiceImpl implements WorkspaceService{
     }
 
     @Override
+    public Workspace create(Workspace obj) {
+        obj.setId(null);
+        obj.setTeams(null);
+        return workspaceRepository.save(obj);
+    }
+
+    @Override
     public List<Workspace> findAll() {
         return workspaceRepository.findAll();
+    }
+
+    @Override
+    public void delete(Integer id) {
+        findById(id);
+        workspaceRepository.deleteById(id);
     }
 
     @Override
