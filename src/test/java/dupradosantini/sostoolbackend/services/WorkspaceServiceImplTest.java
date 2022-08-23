@@ -2,6 +2,7 @@ package dupradosantini.sostoolbackend.services;
 
 import dupradosantini.sostoolbackend.domain.Team;
 import dupradosantini.sostoolbackend.domain.Workspace;
+import dupradosantini.sostoolbackend.repositories.TeamRepository;
 import dupradosantini.sostoolbackend.repositories.WorkspaceRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -26,10 +27,14 @@ class WorkspaceServiceImplTest {
     @Mock
     WorkspaceRepository workspaceRepository;
 
+    @Mock
+    TeamRepository teamRepository;
+
     @BeforeEach
     void setUp() {
         MockitoAnnotations.openMocks(workspaceRepository);
-        workspaceService = new WorkspaceServiceImpl(workspaceRepository);
+        MockitoAnnotations.openMocks(teamRepository);
+        workspaceService = new WorkspaceServiceImpl(workspaceRepository,teamRepository);
     }
 
     @Test

@@ -16,4 +16,10 @@ public interface WorkspaceService {
     Workspace create(Workspace obj);
 
     void delete(Integer id);
+
+    Team createTeam(Integer workspaceId, Team obj);
+
+    void deleteTeam(Integer workspaceId, Integer teamId);
+
+
 }

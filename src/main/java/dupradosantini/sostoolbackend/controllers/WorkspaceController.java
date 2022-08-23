@@ -17,7 +17,7 @@ import java.util.Set;
 @CrossOrigin("*")
 @RestController
 @RequestMapping(value = "/workspace")
-public class WorkspaceController {
+public class WorkspaceController{
 
     private final WorkspaceService workspaceService;
 
@@ -80,6 +80,20 @@ public class WorkspaceController {
     @DeleteMapping(value = "/{id}")
     public ResponseEntity<Void> deleteWorkspace(@PathVariable Integer id){
         workspaceService.delete(id);
+        return ResponseEntity.noContent().build();
+    }
+
+    //CREATE TEAM IN A WORKSPACE
+    @PostMapping("/{id}/teams")
+    public ResponseEntity<Team> createTeamInWorkspace(@PathVariable Integer id, @RequestBody Team obj){
+        Team newTeam = workspaceService.createTeam(id, obj);
+        return ResponseEntity.ok().body(newTeam);
+    }
+
+    //DELETE TEAM IN A WORKSPACE
+    @DeleteMapping("/{workspaceId}/teams/{teamId}")
+    public ResponseEntity<Void> deleteTeam(@PathVariable Integer workspaceId, @PathVariable Integer teamId){
+        workspaceService.deleteTeam(workspaceId,teamId);
         return ResponseEntity.noContent().build();
     }
 }
