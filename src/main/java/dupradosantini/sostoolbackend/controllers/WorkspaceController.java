@@ -17,7 +17,7 @@ import java.util.Set;
 @CrossOrigin("*")
 @RestController
 @RequestMapping(value = "/workspace")
-public class WorkspaceController{
+public class WorkspaceController {
 
     private final WorkspaceService workspaceService;
 
