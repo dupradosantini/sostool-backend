@@ -1,5 +1,6 @@
 package dupradosantini.sostoolbackend.controllers;
 
+import dupradosantini.sostoolbackend.domain.BusinessRole;
 import dupradosantini.sostoolbackend.domain.Team;
 import dupradosantini.sostoolbackend.domain.Workspace;
 import dupradosantini.sostoolbackend.services.WorkspaceService;
@@ -95,5 +96,22 @@ public class WorkspaceController {
     public ResponseEntity<Void> deleteTeam(@PathVariable Integer workspaceId, @PathVariable Integer teamId){
         workspaceService.deleteTeam(workspaceId,teamId);
         return ResponseEntity.noContent().build();
+    }
+
+
+    //ROLE MANAGEMENT ********************************
+
+    //CREATE ROLE GIVEN A WORKSPACE.
+    @PostMapping("/{workspaceId}/businessroles")
+    public ResponseEntity<BusinessRole> createRoleInWorkspace(@PathVariable Integer workspaceId, @RequestBody BusinessRole obj){
+        BusinessRole newBusinessRole = workspaceService.createRole(workspaceId,obj);
+        return ResponseEntity.ok().body(newBusinessRole);
+    }
+
+    //ASSIGN ROLE TO TEAM.
+    @PutMapping("/{workspaceId}/teams/{teamId}/roles/{roleId}")
+    public ResponseEntity<Team> assignRoleToTeam(@PathVariable Integer workspaceId, @PathVariable Integer teamId, @PathVariable Integer roleId){
+        Team updatedTeam =  workspaceService.assignRoleToTeam(workspaceId,teamId,roleId);
+        return ResponseEntity.ok().body(updatedTeam);
     }
 }

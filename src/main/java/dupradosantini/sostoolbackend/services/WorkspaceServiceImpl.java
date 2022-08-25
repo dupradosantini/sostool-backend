@@ -1,7 +1,9 @@
 package dupradosantini.sostoolbackend.services;
 
+import dupradosantini.sostoolbackend.domain.BusinessRole;
 import dupradosantini.sostoolbackend.domain.Team;
 import dupradosantini.sostoolbackend.domain.Workspace;
+import dupradosantini.sostoolbackend.repositories.BusinessRoleRepository;
 import dupradosantini.sostoolbackend.repositories.TeamRepository;
 import dupradosantini.sostoolbackend.repositories.WorkspaceRepository;
 import dupradosantini.sostoolbackend.services.exceptions.ObjectNotFoundException;
@@ -18,13 +20,17 @@ import java.util.Set;
 @Slf4j
 public class WorkspaceServiceImpl implements WorkspaceService{
 
+    private final BusinessRoleRepository businessRoleRepository;
     private final WorkspaceRepository workspaceRepository;
     private final TeamRepository teamRepository;
 
     @Autowired
-    public WorkspaceServiceImpl(WorkspaceRepository workspaceRepository, TeamRepository teamRepository) {
+    public WorkspaceServiceImpl(WorkspaceRepository workspaceRepository,
+                                TeamRepository teamRepository,
+                                BusinessRoleRepository businessRoleRepository) {
         this.workspaceRepository = workspaceRepository;
         this.teamRepository = teamRepository;
+        this.businessRoleRepository = businessRoleRepository;
     }
 
     @Override
@@ -64,7 +70,6 @@ public class WorkspaceServiceImpl implements WorkspaceService{
         return teamRepository.save(obj);
     }
 
-
     @Override
     public void deleteTeam(Integer workspaceId, Integer teamId) throws ObjectNotFoundException {
         try{
@@ -73,5 +78,45 @@ public class WorkspaceServiceImpl implements WorkspaceService{
         }catch(Exception e) {
             throw new ObjectNotFoundException("Team or workspace not found!");
         }
+    }
+
+    @Override
+    public BusinessRole createRole(Integer workspaceId, BusinessRole obj) {
+        obj.setId(null);
+        obj.setWorkspace(this.findById(workspaceId));
+        return businessRoleRepository.save(obj);
+    }
+
+    @Override
+    public Team assignRoleToTeam(Integer workspaceId, Integer teamId, Integer roleId) {
+        findById(workspaceId); //checando se o workspace existe
+        Set<Team> teamSet = this.findTeams(workspaceId);
+        BusinessRole role = this.findRoleById(roleId);
+        Set<Team> roleTeams = role.getTeams();
+        for(Team actual : teamSet){
+            if(actual.getId().equals(teamId)){
+                Set<BusinessRole> currentRoles = actual.getTeamAssignedRoles();
+                if(actual.getWorkspace().equals(role.getWorkspace())){
+                    //Adding the team to the role entity.
+                    roleTeams.add(actual);
+                    role.setTeams(roleTeams);
+                    this.businessRoleRepository.save(role);
+                    //Adding the role to the teamEntity
+                    currentRoles.add(role);
+                    actual.setTeamAssignedRoles(currentRoles);
+                    return this.teamRepository.save(actual);
+                }else{
+                    System.out.println("Esse role não existe no mesmo workspace desse time.");
+                }
+            }
+        }
+        System.out.println("Time não existe nesse workspace!");
+        return null;
+    }
+
+    @Override
+    public BusinessRole findRoleById(Integer roleId) {
+        Optional<BusinessRole> businessRole = businessRoleRepository.findById(roleId);
+        return businessRole.orElseThrow(() -> new ObjectNotFoundException("Business role not found!!"));
     }
 }

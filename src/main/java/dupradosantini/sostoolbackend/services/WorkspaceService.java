@@ -1,5 +1,6 @@
 package dupradosantini.sostoolbackend.services;
 
+import dupradosantini.sostoolbackend.domain.BusinessRole;
 import dupradosantini.sostoolbackend.domain.Team;
 import dupradosantini.sostoolbackend.domain.Workspace;
 
@@ -21,5 +22,9 @@ public interface WorkspaceService {
 
     void deleteTeam(Integer workspaceId, Integer teamId);
 
+    BusinessRole createRole(Integer workspaceId, BusinessRole obj);
 
+    Team assignRoleToTeam(Integer workspaceId, Integer teamId, Integer roleId);
+
+    BusinessRole findRoleById(Integer roleId);
 }
