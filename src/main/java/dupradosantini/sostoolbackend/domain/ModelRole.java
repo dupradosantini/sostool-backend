@@ -3,10 +3,7 @@ package dupradosantini.sostoolbackend.domain;
 import lombok.*;
 import org.hibernate.validator.constraints.Length;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
 import java.io.Serializable;
 import java.util.Objects;
@@ -26,11 +23,12 @@ public class ModelRole implements Serializable {
     private Integer id;
 
 
+    @Column(unique = true)
     @NotEmpty(message = "This field is required")
-    @Length(min = 3, max = 100, message = "Role name has to have between 3 and 100 characters")
+    @Length(min = 3, max = 100, message = "ModelRole name has to have between 3 and 100 characters")
     private String name;
 
-    @Length(max=2000, message = "Workspace description can have at most 2000 characters")
+    @Length(max=2000, message = "ModelRole description can have at most 2000 characters")
     private String description;
 
     public ModelRole(String name, String description) {

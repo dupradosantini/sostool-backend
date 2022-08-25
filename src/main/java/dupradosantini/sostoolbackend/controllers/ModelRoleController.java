@@ -24,7 +24,7 @@ public class ModelRoleController {
         this.modelRoleService = modelRoleService;
     }
 
-    //FIND ALL METHOD //TODO - PAGING and Maybe DTOs for Swagger consistency
+    //FIND ALL METHOD //TODO - Maybe DTOs for Swagger consistency
     @Operation(summary = "Fetches all the ModelRoles available!")
     @ApiResponse(responseCode = "200", description = "List of all ModelRoles retrieved")
     @GetMapping

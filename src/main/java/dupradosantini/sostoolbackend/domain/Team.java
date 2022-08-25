@@ -1,6 +1,8 @@
 package dupradosantini.sostoolbackend.domain;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.*;
 import org.hibernate.validator.constraints.Length;
 
@@ -8,6 +10,7 @@ import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
 import java.io.Serializable;
 import java.util.Objects;
+import java.util.Set;
 
 @Entity
 @Getter
@@ -31,6 +34,13 @@ public class Team implements Serializable {
     @ManyToOne(optional = false)
     @JsonBackReference(value = "workspace-team")
     private Workspace workspace;
+
+    @ManyToMany
+    /*@JoinTable(name = "team-roles",
+            joinColumns = @JoinColumn(name = "team_id"),
+            inverseJoinColumns = @JoinColumn(name = "businessrole_id"))*/
+    //@JsonManagedReference(value = "team-businessrole")
+    private Set<BusinessRole> teamAssignedRoles;
 
     public Team(String name, Workspace workspace) {
         this.name = name;

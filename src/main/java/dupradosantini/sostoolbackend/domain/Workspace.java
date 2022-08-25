@@ -22,6 +22,7 @@ public class Workspace implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
+    @Column(unique = true)
     @NotEmpty(message = "This field is required")
     @Length(min = 3, max = 100, message = "Workspace has to have between 3 and 100 characters")
     private String name;
@@ -32,6 +33,11 @@ public class Workspace implements Serializable {
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "workspace")
     @JsonManagedReference(value = "workspace-team")
     private Set<Team> teams;
+
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "workspace")
+    @JsonManagedReference(value = "workspace-businessrole")
+    private Set<BusinessRole> businessRoles;
 
     //null description constructor.
     public Workspace(String name) {
