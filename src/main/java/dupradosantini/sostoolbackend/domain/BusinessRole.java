@@ -24,6 +24,7 @@ public class BusinessRole implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
+    @Column(unique = true)
     @NotEmpty(message = "This field is required")
     @Length(min = 3, max = 100, message = "BusinessRole name has to have between 3 and 100 characters")
     private String name;

@@ -101,6 +101,13 @@ public class WorkspaceController {
 
     //ROLE MANAGEMENT ********************************
 
+    //GET BUSINESSROLES GIVEN A WORKSPACE
+    @GetMapping("/{workspaceId}/businessroles")
+    public ResponseEntity<Set<BusinessRole>> getRolesInWorkspace(@PathVariable Integer workspaceId){
+        Set<BusinessRole> businessRoleSet = workspaceService.findAllRoles(workspaceId);
+        return ResponseEntity.ok().body(businessRoleSet);
+    }
+
     //CREATE ROLE GIVEN A WORKSPACE.
     @PostMapping("/{workspaceId}/businessroles")
     public ResponseEntity<BusinessRole> createRoleInWorkspace(@PathVariable Integer workspaceId, @RequestBody BusinessRole obj){

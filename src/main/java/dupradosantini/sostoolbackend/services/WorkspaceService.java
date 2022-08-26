@@ -27,4 +27,6 @@ public interface WorkspaceService {
     Team assignRoleToTeam(Integer workspaceId, Integer teamId, Integer roleId);
 
     BusinessRole findRoleById(Integer roleId);
+
+    Set<BusinessRole> findAllRoles(Integer workspaceId);
 }

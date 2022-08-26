@@ -119,4 +119,10 @@ public class WorkspaceServiceImpl implements WorkspaceService{
         Optional<BusinessRole> businessRole = businessRoleRepository.findById(roleId);
         return businessRole.orElseThrow(() -> new ObjectNotFoundException("Business role not found!!"));
     }
+
+    @Override
+    public Set<BusinessRole> findAllRoles(Integer workspaceId) {
+        Workspace workspace = findById(workspaceId);
+        return workspace.getBusinessRoles();
+    }
 }
