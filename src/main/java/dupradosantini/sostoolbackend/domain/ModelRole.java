@@ -1,5 +1,6 @@
 package dupradosantini.sostoolbackend.domain;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.*;
 import org.hibernate.validator.constraints.Length;
 
@@ -7,6 +8,7 @@ import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
 import java.io.Serializable;
 import java.util.Objects;
+import java.util.Set;
 
 @Entity
 @Getter
@@ -30,6 +32,10 @@ public class ModelRole implements Serializable {
 
     @Length(max=2000, message = "ModelRole description can have at most 2000 characters")
     private String description;
+
+    @OneToMany
+    @JsonManagedReference(value = "modelRole-role")
+    private Set<BusinessRole> sonRoles;
 
     public ModelRole(String name, String description) {
         this.name = name;

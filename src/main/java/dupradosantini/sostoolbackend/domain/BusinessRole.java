@@ -41,9 +41,9 @@ public class BusinessRole implements Serializable {
     @JsonBackReference(value = "workspace-businessrole")
     private Workspace workspace; //Workspace that this role exists.
 
-
-
-
+    @ManyToOne
+    @JsonBackReference(value = "modelRole-role")
+    private ModelRole parentRole;
 
 
 }

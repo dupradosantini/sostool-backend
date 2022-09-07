@@ -8,5 +8,7 @@ public interface ModelRoleService {
 
     List<ModelRole> findAll();
 
+    ModelRole findById(Integer id);
+
     ModelRole create(ModelRole obj);
 }

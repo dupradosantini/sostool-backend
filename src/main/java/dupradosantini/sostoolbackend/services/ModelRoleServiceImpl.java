@@ -1,12 +1,15 @@
 package dupradosantini.sostoolbackend.services;
 
 import dupradosantini.sostoolbackend.domain.ModelRole;
+import dupradosantini.sostoolbackend.domain.Workspace;
 import dupradosantini.sostoolbackend.repositories.ModelRoleRepository;
+import dupradosantini.sostoolbackend.services.exceptions.ObjectNotFoundException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @Slf4j
@@ -22,6 +25,12 @@ public class ModelRoleServiceImpl implements  ModelRoleService {
     @Override
     public List<ModelRole> findAll() {
         return modelRoleRepository.findAll();
+    }
+
+    @Override
+    public ModelRole findById(Integer id) {
+        Optional<ModelRole> obj = modelRoleRepository.findById(id);
+        return obj.orElseThrow(() -> new ObjectNotFoundException("ModelRole not found!!"));
     }
 
     @Override
