@@ -43,6 +43,7 @@ public class BootStrapData implements CommandLineRunner {
 
         teamRepository.saveAll(Arrays.asList(t1w1,t1w2,t2w1,t2w2));
 
+        ModelRole other = new ModelRole("Other", "Some role not already described.");
         //Engineering
         ModelRole m1 = new ModelRole("SoS Software Engineer","SoS Software Engineer description");
         ModelRole m2 = new ModelRole("SoS Software Architect","SoS Software Architect description");
@@ -55,7 +56,7 @@ public class BootStrapData implements CommandLineRunner {
         ModelRole m8 = new ModelRole("SoS Sponsor","SoS Sponsor description");
         ModelRole m9 = new ModelRole("SoS Funding Authority","SoS Funding Authority description");
 
-        modelRoleRepository.saveAll(Arrays.asList(m1,m2,m3,m4,m5,m6,m7,m8,m9));
+        modelRoleRepository.saveAll(Arrays.asList(other,m1,m2,m3,m4,m5,m6,m7,m8,m9));
 
         System.out.println("Number of workspaces: " + workspaceRepository.count());
 
