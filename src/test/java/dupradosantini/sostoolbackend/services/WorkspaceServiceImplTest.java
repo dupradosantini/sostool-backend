@@ -34,12 +34,16 @@ class WorkspaceServiceImplTest {
     @Mock
     BusinessRoleRepository businessRoleRepository;
 
+    @Mock
+    ModelRoleServiceImpl modelRoleService;
+
     @BeforeEach
     void setUp() {
         MockitoAnnotations.openMocks(workspaceRepository);
         MockitoAnnotations.openMocks(teamRepository);
         MockitoAnnotations.openMocks(businessRoleRepository);
-        workspaceService = new WorkspaceServiceImpl(workspaceRepository,teamRepository,businessRoleRepository);
+        MockitoAnnotations.openMocks(modelRoleService);
+        workspaceService = new WorkspaceServiceImpl(workspaceRepository,teamRepository,businessRoleRepository,modelRoleService);
     }
 
     @Test

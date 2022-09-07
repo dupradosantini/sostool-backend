@@ -1,7 +1,6 @@
 package dupradosantini.sostoolbackend.services;
 
 import dupradosantini.sostoolbackend.domain.ModelRole;
-import dupradosantini.sostoolbackend.domain.Workspace;
 import dupradosantini.sostoolbackend.repositories.ModelRoleRepository;
 import dupradosantini.sostoolbackend.services.exceptions.ObjectNotFoundException;
 import lombok.extern.slf4j.Slf4j;
@@ -31,6 +30,12 @@ public class ModelRoleServiceImpl implements  ModelRoleService {
     public ModelRole findById(Integer id) {
         Optional<ModelRole> obj = modelRoleRepository.findById(id);
         return obj.orElseThrow(() -> new ObjectNotFoundException("ModelRole not found!!"));
+    }
+
+    @Override
+    public ModelRole update(ModelRole obj) {
+        this.findById(obj.getId());
+        return modelRoleRepository.save(obj);
     }
 
     @Override

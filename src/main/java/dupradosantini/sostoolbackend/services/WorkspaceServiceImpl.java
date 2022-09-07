@@ -1,6 +1,7 @@
 package dupradosantini.sostoolbackend.services;
 
 import dupradosantini.sostoolbackend.domain.BusinessRole;
+import dupradosantini.sostoolbackend.domain.ModelRole;
 import dupradosantini.sostoolbackend.domain.Team;
 import dupradosantini.sostoolbackend.domain.Workspace;
 import dupradosantini.sostoolbackend.repositories.BusinessRoleRepository;
@@ -23,14 +24,17 @@ public class WorkspaceServiceImpl implements WorkspaceService{
     private final BusinessRoleRepository businessRoleRepository;
     private final WorkspaceRepository workspaceRepository;
     private final TeamRepository teamRepository;
+    private final ModelRoleServiceImpl modelRoleService;
 
     @Autowired
     public WorkspaceServiceImpl(WorkspaceRepository workspaceRepository,
                                 TeamRepository teamRepository,
-                                BusinessRoleRepository businessRoleRepository) {
+                                BusinessRoleRepository businessRoleRepository,
+                                ModelRoleServiceImpl modelRoleService) {
         this.workspaceRepository = workspaceRepository;
         this.teamRepository = teamRepository;
         this.businessRoleRepository = businessRoleRepository;
+        this.modelRoleService = modelRoleService;
     }
 
     @Override
@@ -84,7 +88,23 @@ public class WorkspaceServiceImpl implements WorkspaceService{
     public BusinessRole createRole(Integer workspaceId, BusinessRole obj) {
         obj.setId(null);
         obj.setWorkspace(this.findById(workspaceId));
-        return businessRoleRepository.save(obj);
+
+        //Checking if the parentRole exists.
+        Integer parentRoleId = obj.getParentRole().getId();
+        ModelRole returnedParent = modelRoleService.findById(parentRoleId);
+        //If it does, set the parent as the returned OBJ
+        obj.setParentRole(returnedParent);
+
+        //Also adding the role as a son to the parent.
+        Set<BusinessRole> businessRoleSet = returnedParent.getSonRoles();
+        businessRoleSet.add(obj);
+        returnedParent.setSonRoles(businessRoleSet);
+
+        //Saving the new businessRole FIRST, then updating the modelRole its basedOn;
+        BusinessRole newObj = businessRoleRepository.save(obj);
+        modelRoleService.update(returnedParent);
+
+        return newObj;
     }
 
     @Override

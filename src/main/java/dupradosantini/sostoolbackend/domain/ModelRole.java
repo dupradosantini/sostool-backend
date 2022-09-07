@@ -34,7 +34,7 @@ public class ModelRole implements Serializable {
     private String description;
 
     @OneToMany
-    @JsonManagedReference(value = "modelRole-role")
+    @JsonManagedReference(value = "parentRole-sonRoles")
     private Set<BusinessRole> sonRoles;
 
     public ModelRole(String name, String description) {

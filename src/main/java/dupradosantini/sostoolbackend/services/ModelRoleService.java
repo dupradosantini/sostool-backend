@@ -10,5 +10,7 @@ public interface ModelRoleService {
 
     ModelRole findById(Integer id);
 
+    ModelRole update(ModelRole obj);
+
     ModelRole create(ModelRole obj);
 }
