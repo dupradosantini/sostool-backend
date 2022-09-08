@@ -115,7 +115,7 @@ public class WorkspaceServiceImpl implements WorkspaceService{
     }
 
     @Override
-    public Team assignRoleToTeam(Integer workspaceId, Integer teamId, Integer roleId) {
+    public Set<Team> assignRoleToTeam(Integer workspaceId, Integer teamId, Integer roleId) {
         findById(workspaceId); //checando se o workspace existe
         Set<Team> teamSet = this.findTeams(workspaceId);
         BusinessRole role = this.findRoleById(roleId);
@@ -124,6 +124,9 @@ public class WorkspaceServiceImpl implements WorkspaceService{
             if(actual.getId().equals(teamId)){
                 Set<BusinessRole> currentRoles = actual.getTeamAssignedRoles();
                 if(actual.getWorkspace().equals(role.getWorkspace())){
+                    if(actual.getTeamAssignedRoles().contains(role)){
+                        throw new BusinessRoleAlreadyExistsException("This Role is already in this team!");
+                    }
                     //Adding the team to the role entity.
                     roleTeams.add(actual);
                     role.setTeams(roleTeams);
@@ -131,7 +134,8 @@ public class WorkspaceServiceImpl implements WorkspaceService{
                     //Adding the role to the teamEntity
                     currentRoles.add(role);
                     actual.setTeamAssignedRoles(currentRoles);
-                    return this.teamRepository.save(actual);
+                    this.teamRepository.save(actual);
+                    return this.findTeams(workspaceId);
                 }else{
                     System.out.println("Esse role não existe no mesmo workspace desse time.");
                 }

@@ -117,9 +117,9 @@ public class WorkspaceController {
 
     //ASSIGN ROLE TO TEAM.
     @PutMapping("/{workspaceId}/teams/{teamId}/roles/{roleId}")
-    public ResponseEntity<Team> assignRoleToTeam(@PathVariable Integer workspaceId, @PathVariable Integer teamId, @PathVariable Integer roleId){
-        Team updatedTeam =  workspaceService.assignRoleToTeam(workspaceId,teamId,roleId);
-        return ResponseEntity.ok().body(updatedTeam);
+    public ResponseEntity<Set<Team>> assignRoleToTeam(@PathVariable Integer workspaceId, @PathVariable Integer teamId, @PathVariable Integer roleId){
+        Set<Team> updatedTeamSet =  workspaceService.assignRoleToTeam(workspaceId,teamId,roleId);
+        return ResponseEntity.ok().body(updatedTeamSet);
     }
 
     @GetMapping("/{workspaceId}/roles-in-many-teams")
