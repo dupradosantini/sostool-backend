@@ -8,6 +8,7 @@ import org.hibernate.validator.constraints.Length;
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
 import java.io.Serializable;
+import java.util.Objects;
 import java.util.Set;
 
 @Entity
@@ -15,7 +16,6 @@ import java.util.Set;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@ToString
 public class BusinessRole implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -24,7 +24,6 @@ public class BusinessRole implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @Column(unique = true)
     @NotEmpty(message = "This field is required")
     @Length(min = 3, max = 100, message = "BusinessRole name has to have between 3 and 100 characters")
     private String name;
@@ -45,5 +44,28 @@ public class BusinessRole implements Serializable {
     @JsonBackReference(value = "parentRole-sonRoles")
     private ModelRole parentRole;
 
+    @Override
+    public String toString() {
+        return "BusinessRole{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", description='" + description + '\'' +
+                ", teams=" + teams +
+                ", workspace=" + workspace +
+                ", parentRole=" + parentRole +
+                '}';
+    }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        BusinessRole that = (BusinessRole) o;
+        return getId().equals(that.getId());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getId());
+    }
 }

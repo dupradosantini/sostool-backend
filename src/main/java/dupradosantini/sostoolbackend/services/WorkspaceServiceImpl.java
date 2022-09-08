@@ -7,6 +7,7 @@ import dupradosantini.sostoolbackend.domain.Workspace;
 import dupradosantini.sostoolbackend.repositories.BusinessRoleRepository;
 import dupradosantini.sostoolbackend.repositories.TeamRepository;
 import dupradosantini.sostoolbackend.repositories.WorkspaceRepository;
+import dupradosantini.sostoolbackend.services.exceptions.BusinessRoleAlreadyExistsException;
 import dupradosantini.sostoolbackend.services.exceptions.ObjectNotFoundException;
 import lombok.extern.slf4j.Slf4j;
 
@@ -89,6 +90,12 @@ public class WorkspaceServiceImpl implements WorkspaceService{
         obj.setId(null);
         obj.setWorkspace(this.findById(workspaceId));
 
+        Optional<BusinessRole> testIfExists = workspaceRepository.findRoleWithNameInWorkspace(obj.getName(), workspaceId);
+
+        if(testIfExists.isPresent()){
+            throw new BusinessRoleAlreadyExistsException("Business Role with this name already exists in this workspace");
+        }
+
         //Checking if the parentRole exists.
         Integer parentRoleId = obj.getParentRole().getId();
         ModelRole returnedParent = modelRoleService.findById(parentRoleId);
@@ -144,5 +151,12 @@ public class WorkspaceServiceImpl implements WorkspaceService{
     public Set<BusinessRole> findAllRoles(Integer workspaceId) {
         Workspace workspace = findById(workspaceId);
         return workspace.getBusinessRoles();
+    }
+
+    @Override
+    public List<BusinessRole> businessRoleExistsInManyTeams(Integer workspaceId) {
+        this.findById(workspaceId);
+        Optional<List<BusinessRole>> optional = workspaceRepository.findRolesInMoreThanOne(workspaceId);
+        return optional.orElseThrow(() -> new ObjectNotFoundException("TEST not found!!"));
     }
 }

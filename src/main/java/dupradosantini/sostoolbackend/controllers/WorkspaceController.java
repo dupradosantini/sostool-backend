@@ -121,4 +121,10 @@ public class WorkspaceController {
         Team updatedTeam =  workspaceService.assignRoleToTeam(workspaceId,teamId,roleId);
         return ResponseEntity.ok().body(updatedTeam);
     }
+
+    @GetMapping("/{workspaceId}/roles-in-many-teams")
+    public ResponseEntity<List<BusinessRole>> getRolesInManyTeams(@PathVariable Integer workspaceId){
+        List<BusinessRole> testList = workspaceService.businessRoleExistsInManyTeams(workspaceId);
+        return ResponseEntity.ok().body(testList);
+    }
 }

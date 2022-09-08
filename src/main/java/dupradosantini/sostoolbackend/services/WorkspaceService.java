@@ -29,4 +29,6 @@ public interface WorkspaceService {
     BusinessRole findRoleById(Integer roleId);
 
     Set<BusinessRole> findAllRoles(Integer workspaceId);
+
+    List<BusinessRole> businessRoleExistsInManyTeams(Integer workspaceId);
 }
