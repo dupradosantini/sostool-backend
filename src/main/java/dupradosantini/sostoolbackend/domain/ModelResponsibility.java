@@ -1,11 +1,13 @@
 package dupradosantini.sostoolbackend.domain;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.hibernate.validator.constraints.Length;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotEmpty;
 import java.io.Serializable;
 import java.util.Objects;
 import java.util.Set;
@@ -15,7 +17,7 @@ import java.util.Set;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class ModelRole implements Serializable {
+public class ModelResponsibility implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -23,21 +25,14 @@ public class ModelRole implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-
-    @Column(unique = true)
-    @NotEmpty(message = "This field is required")
-    @Length(min = 3, max = 100, message = "ModelRole name has to have between 3 and 100 characters")
-    private String name;
-
-    @Length(max=2000, message = "ModelRole description can have at most 2000 characters")
+    @Length(max=2000, message = "ModelResponsability description can have at most 2000 characters")
     private String description;
 
     @OneToMany
-    @JsonManagedReference(value = "parentRole-sonRoles")
-    private Set<BusinessRole> sonRoles;
+    @JsonManagedReference(value = "parentResponsibility-sonResponsibilities")
+    private Set<BusinessResponsibility> sonResponsibilities;
 
-    public ModelRole(String name, String description) {
-        this.name = name;
+    public ModelResponsibility(String description) {
         this.description = description;
     }
 
@@ -45,22 +40,21 @@ public class ModelRole implements Serializable {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        ModelRole modelRole = (ModelRole) o;
-        return id.equals(modelRole.id);
+        ModelResponsibility that = (ModelResponsibility) o;
+        return getId().equals(that.getId());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id);
+        return Objects.hash(getId());
     }
 
     @Override
     public String toString() {
-        return "ModelRole{" +
+        return "ModelResponsibility{" +
                 "id=" + id +
-                ", name='" + name + '\'' +
                 ", description='" + description + '\'' +
-                ", sonRoles=" + sonRoles +
+                ", sonResponsibilities=" + sonResponsibilities +
                 '}';
     }
 }
