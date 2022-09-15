@@ -1,8 +1,10 @@
 package dupradosantini.sostoolbackend.bootstrap;
 
+import dupradosantini.sostoolbackend.domain.ModelResponsibility;
 import dupradosantini.sostoolbackend.domain.ModelRole;
 import dupradosantini.sostoolbackend.domain.Team;
 import dupradosantini.sostoolbackend.domain.Workspace;
+import dupradosantini.sostoolbackend.repositories.ModelResponsibilityRepository;
 import dupradosantini.sostoolbackend.repositories.ModelRoleRepository;
 import dupradosantini.sostoolbackend.repositories.TeamRepository;
 import dupradosantini.sostoolbackend.repositories.WorkspaceRepository;
@@ -18,12 +20,17 @@ public class BootStrapData implements CommandLineRunner {
     private final WorkspaceRepository workspaceRepository;
     private final TeamRepository teamRepository;
     private final ModelRoleRepository modelRoleRepository;
+    private final ModelResponsibilityRepository modelResponsibilityRepository;
 
     @Autowired
-    public BootStrapData(WorkspaceRepository workspaceRepository, TeamRepository teamRepository, ModelRoleRepository modelRoleRepository) {
+    public BootStrapData(WorkspaceRepository workspaceRepository,
+                         TeamRepository teamRepository,
+                         ModelRoleRepository modelRoleRepository,
+                         ModelResponsibilityRepository modelResponsibilityRepository) {
         this.workspaceRepository = workspaceRepository;
         this.teamRepository = teamRepository;
         this.modelRoleRepository = modelRoleRepository;
+        this.modelResponsibilityRepository = modelResponsibilityRepository;
     }
 
     @Override
@@ -57,6 +64,28 @@ public class BootStrapData implements CommandLineRunner {
         ModelRole m9 = new ModelRole("SoS Funding Authority","SoS Funding Authority description");
 
         modelRoleRepository.saveAll(Arrays.asList(other,m1,m2,m3,m4,m5,m6,m7,m8,m9));
+
+        //Responsibility
+        ModelResponsibility otherResp = new ModelResponsibility("Other");
+
+        ModelResponsibility r1 = new ModelResponsibility("To expand or redefine existing SE processes");
+        ModelResponsibility r2 = new ModelResponsibility("To understand technical-level expectations");
+        ModelResponsibility r3 = new ModelResponsibility("To translate capability needs into high-level requirements");
+        ModelResponsibility r4 = new ModelResponsibility("To derive the SoS requirements from the capability objectives");
+        ModelResponsibility r5 = new ModelResponsibility("To understand the nature and the dynamics of the SoS");
+        ModelResponsibility r6 = new ModelResponsibility("To identify new needs as the situation changes and the SoS evolves");
+        ModelResponsibility r7 = new ModelResponsibility("To understand the systems involved in providing the needed SoS capabilities");
+        ModelResponsibility r8 = new ModelResponsibility("To identify the stakeholders and users of SoS and systems, and understand their organizational context");
+        ModelResponsibility r9 = new ModelResponsibility("To establish metrics and methods for assessing performance of the SoS capabilities");
+        ModelResponsibility r10 = new ModelResponsibility("To prevent problems or develop strategies to mitigate the impact on the SoS.");
+        ModelResponsibility r11 = new ModelResponsibility("To derive the SoS requirements from the capability objectives");
+        ModelResponsibility r12 = new ModelResponsibility("To design the changes that will be implemented by the CS");
+        ModelResponsibility r13 = new ModelResponsibility("To fund, plan, contractually enable, facilitate upgrades to the SoS");
+        ModelResponsibility r14 = new ModelResponsibility("To work across systems and balance technical and nontechnical issues");
+        ModelResponsibility r15 = new ModelResponsibility("To support management decisions");
+
+        modelResponsibilityRepository.saveAll(Arrays.asList(otherResp,r1,r2,r3,r4,r5,r6,r7,r8,r9,r10,r11,r12,r13,r14,r15));
+
 
         System.out.println("Number of workspaces: " + workspaceRepository.count());
 
