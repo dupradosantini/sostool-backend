@@ -29,7 +29,7 @@ public class BusinessResponsibility implements Serializable {
 
     @ManyToOne(optional = false)
     @JsonBackReference(value = "parentResponsibility-sonResponsibilities")
-    private ModelRole parentResponsibility;
+    private ModelResponsibility parentResponsibility;
 
     @Override
     public boolean equals(Object o) {
