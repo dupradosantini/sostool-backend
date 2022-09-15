@@ -1,6 +1,7 @@
 package dupradosantini.sostoolbackend.domain;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -10,6 +11,7 @@ import org.hibernate.validator.constraints.Length;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Objects;
+import java.util.Set;
 
 @Entity
 @Getter
@@ -30,6 +32,14 @@ public class BusinessResponsibility implements Serializable {
     @ManyToOne(optional = false)
     @JsonBackReference(value = "parentResponsibility-sonResponsibilities")
     private ModelResponsibility parentResponsibility;
+
+    @ManyToOne(optional = false)
+    @JsonBackReference(value = "workspace-businessResponsibilities")
+    private Workspace workspace; //Workspace that this responsibility exists.
+
+    @ManyToMany(mappedBy = "roleAssignedResponsibilities")
+    @JsonIgnore
+    private Set<BusinessRole> businessRoles; //Roles that such responsibility is assigned to
 
     @Override
     public boolean equals(Object o) {

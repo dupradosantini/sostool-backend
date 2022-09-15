@@ -1,5 +1,6 @@
 package dupradosantini.sostoolbackend.services;
 
+import dupradosantini.sostoolbackend.domain.BusinessResponsibility;
 import dupradosantini.sostoolbackend.domain.BusinessRole;
 import dupradosantini.sostoolbackend.domain.Team;
 import dupradosantini.sostoolbackend.domain.Workspace;
@@ -26,9 +27,21 @@ public interface WorkspaceService {
 
     Set<Team> assignRoleToTeam(Integer workspaceId, Integer teamId, Integer roleId);
 
+    //ROLES
+
     BusinessRole findRoleById(Integer roleId);
 
     Set<BusinessRole> findAllRoles(Integer workspaceId);
 
     List<BusinessRole> businessRoleExistsInManyTeams(Integer workspaceId);
+
+    //RESPONSIBILITY
+
+    BusinessResponsibility findResponsibilityById(Integer responsibilityId);
+
+    Set<BusinessResponsibility> findAllResponsibilities(Integer workspaceId);
+
+    BusinessResponsibility createResponsibility(Integer workspaceId, BusinessResponsibility obj);
+
+    Set<BusinessRole> assignResponsibilityToRole(Integer workspaceId, Integer roleId, Integer responsibilityId);
 }

@@ -2,6 +2,7 @@ package dupradosantini.sostoolbackend.services;
 
 import dupradosantini.sostoolbackend.domain.Team;
 import dupradosantini.sostoolbackend.domain.Workspace;
+import dupradosantini.sostoolbackend.repositories.BusinessResponsibilityRepository;
 import dupradosantini.sostoolbackend.repositories.BusinessRoleRepository;
 import dupradosantini.sostoolbackend.repositories.TeamRepository;
 import dupradosantini.sostoolbackend.repositories.WorkspaceRepository;
@@ -35,7 +36,13 @@ class WorkspaceServiceImplTest {
     BusinessRoleRepository businessRoleRepository;
 
     @Mock
+    BusinessResponsibilityRepository businessResponsibilityRepository;
+
+    @Mock
     ModelRoleServiceImpl modelRoleService;
+
+    @Mock
+    ModelResponsibilityServiceImpl modelResponsibilityService;
 
     @BeforeEach
     void setUp() {
@@ -43,7 +50,14 @@ class WorkspaceServiceImplTest {
         MockitoAnnotations.openMocks(teamRepository);
         MockitoAnnotations.openMocks(businessRoleRepository);
         MockitoAnnotations.openMocks(modelRoleService);
-        workspaceService = new WorkspaceServiceImpl(workspaceRepository,teamRepository,businessRoleRepository,modelRoleService);
+        MockitoAnnotations.openMocks(modelResponsibilityService);
+        workspaceService = new WorkspaceServiceImpl(
+                workspaceRepository,
+                teamRepository,
+                businessRoleRepository,
+                modelRoleService,
+                modelResponsibilityService,
+                businessResponsibilityRepository);
     }
 
     @Test

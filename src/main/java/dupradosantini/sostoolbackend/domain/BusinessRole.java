@@ -44,6 +44,9 @@ public class BusinessRole implements Serializable {
     @JsonBackReference(value = "parentRole-sonRoles")
     private ModelRole parentRole;
 
+    @ManyToMany
+    private Set<BusinessResponsibility> roleAssignedResponsibilities;
+
     @Override
     public String toString() {
         return "BusinessRole{" +

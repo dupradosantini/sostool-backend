@@ -1,9 +1,7 @@
 package dupradosantini.sostoolbackend.services;
 
-import dupradosantini.sostoolbackend.domain.BusinessRole;
-import dupradosantini.sostoolbackend.domain.ModelRole;
-import dupradosantini.sostoolbackend.domain.Team;
-import dupradosantini.sostoolbackend.domain.Workspace;
+import dupradosantini.sostoolbackend.domain.*;
+import dupradosantini.sostoolbackend.repositories.BusinessResponsibilityRepository;
 import dupradosantini.sostoolbackend.repositories.BusinessRoleRepository;
 import dupradosantini.sostoolbackend.repositories.TeamRepository;
 import dupradosantini.sostoolbackend.repositories.WorkspaceRepository;
@@ -23,19 +21,25 @@ import java.util.Set;
 public class WorkspaceServiceImpl implements WorkspaceService{
 
     private final BusinessRoleRepository businessRoleRepository;
+    private final BusinessResponsibilityRepository businessResponsibilityRepository;
     private final WorkspaceRepository workspaceRepository;
     private final TeamRepository teamRepository;
     private final ModelRoleServiceImpl modelRoleService;
+    private final ModelResponsibilityServiceImpl modelResponsibilityService;
 
     @Autowired
     public WorkspaceServiceImpl(WorkspaceRepository workspaceRepository,
                                 TeamRepository teamRepository,
                                 BusinessRoleRepository businessRoleRepository,
-                                ModelRoleServiceImpl modelRoleService) {
+                                ModelRoleServiceImpl modelRoleService,
+                                ModelResponsibilityServiceImpl modelResponsibilityService,
+                                BusinessResponsibilityRepository businessResponsibilityRepository) {
         this.workspaceRepository = workspaceRepository;
         this.teamRepository = teamRepository;
         this.businessRoleRepository = businessRoleRepository;
         this.modelRoleService = modelRoleService;
+        this.modelResponsibilityService = modelResponsibilityService;
+        this.businessResponsibilityRepository = businessResponsibilityRepository;
     }
 
     @Override
@@ -84,6 +88,8 @@ public class WorkspaceServiceImpl implements WorkspaceService{
             throw new ObjectNotFoundException("Team or workspace not found!");
         }
     }
+
+    //ROLE RELATED METHODS ***************************
 
     @Override
     public BusinessRole createRole(Integer workspaceId, BusinessRole obj) {
@@ -162,5 +168,81 @@ public class WorkspaceServiceImpl implements WorkspaceService{
         this.findById(workspaceId);
         Optional<List<BusinessRole>> optional = workspaceRepository.findRolesInMoreThanOne(workspaceId);
         return optional.orElseThrow(() -> new ObjectNotFoundException("TEST not found!!"));
+    }
+
+    //RESPONSIBILITIES RELATED METHODS *************************
+
+    @Override
+    public BusinessResponsibility findResponsibilityById(Integer responsibilityId) {
+        Optional<BusinessResponsibility> businessResponsibility = businessResponsibilityRepository.findById(responsibilityId);
+        return businessResponsibility.orElseThrow(() -> new ObjectNotFoundException("Business responsibility not found!!"));
+    }
+
+    @Override
+    public Set<BusinessResponsibility> findAllResponsibilities(Integer workspaceId) {
+        Workspace workspace = findById(workspaceId);
+        return workspace.getBusinessResponsibilities();
+    }
+
+    @Override
+    public BusinessResponsibility createResponsibility(Integer workspaceId, BusinessResponsibility obj) {
+
+        obj.setId(null);
+        obj.setWorkspace(this.findById(workspaceId));
+
+        Optional<BusinessResponsibility> testIfExists = workspaceRepository.findResponsibilityWithDescriptionInWorkspace(obj.getDescription(), workspaceId);
+
+        if(testIfExists.isPresent()){
+            throw new BusinessRoleAlreadyExistsException("Business Role with this name already exists in this workspace");
+        }
+
+        //Checking if the parentRole exists.
+        Integer parentResponsibilityId = obj.getParentResponsibility().getId();
+        ModelResponsibility returnedParent = modelResponsibilityService.findById(parentResponsibilityId);
+        //If it does, set the parent as the returned OBJ
+        obj.setParentResponsibility(returnedParent);
+
+        //Also adding the role as a son to the parent.
+        Set<BusinessResponsibility> businessResponsibilitySet = returnedParent.getSonResponsibilities();
+        businessResponsibilitySet.add(obj);
+        returnedParent.setSonResponsibilities(businessResponsibilitySet);
+
+        //Saving the new businessRole FIRST, then updating the modelRole its basedOn;
+        BusinessResponsibility newObj = businessResponsibilityRepository.save(obj);
+        modelResponsibilityService.update(returnedParent);
+
+        return newObj;
+    }
+
+    @Override
+    public Set<BusinessRole> assignResponsibilityToRole(Integer workspaceId, Integer businessRoleId, Integer responsibilityId) {
+        findById(workspaceId); //checando se o workspace existe
+        findRoleById(businessRoleId);
+        Set<BusinessRole> businessRoleSet = this.findAllRoles(workspaceId);
+        BusinessResponsibility responsibility = this.findResponsibilityById(responsibilityId);
+        Set<BusinessRole> businessResponsibilityRoles = responsibility.getBusinessRoles();
+        for(BusinessRole actual : businessRoleSet){
+            if(actual.getId().equals(businessRoleId)){
+                Set<BusinessResponsibility> currentResponsibility = actual.getRoleAssignedResponsibilities();
+                if(actual.getWorkspace().equals(responsibility.getWorkspace())){
+                    if(actual.getRoleAssignedResponsibilities().contains(responsibility)){
+                        throw new BusinessRoleAlreadyExistsException("This Responsibility is already in this role!");
+                    }
+                    //Adding the role to the responsibility entity.
+                    businessResponsibilityRoles.add(actual);
+                    responsibility.setBusinessRoles(businessResponsibilityRoles);
+                    this.businessResponsibilityRepository.save(responsibility);
+                    //Adding the responsibility to the roleEntity
+                    currentResponsibility.add(responsibility);
+                    actual.setRoleAssignedResponsibilities(currentResponsibility);
+                    this.businessRoleRepository.save(actual);
+                    return this.findAllRoles(workspaceId);
+                }else{
+                    System.out.println("Esse responsibility não existe no mesmo workspace desse businessrole.");
+                }
+            }
+        }
+        System.out.println("BusinessRole não existe nesse workspace!");
+        return null;
     }
 }

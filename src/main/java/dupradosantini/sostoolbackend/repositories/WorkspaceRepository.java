@@ -1,5 +1,6 @@
 package dupradosantini.sostoolbackend.repositories;
 
+import dupradosantini.sostoolbackend.domain.BusinessResponsibility;
 import dupradosantini.sostoolbackend.domain.BusinessRole;
 import dupradosantini.sostoolbackend.domain.Team;
 import dupradosantini.sostoolbackend.domain.Workspace;
@@ -28,4 +29,8 @@ public interface WorkspaceRepository extends JpaRepository<Workspace, Integer> {
     @Query("SELECT b FROM BusinessRole b WHERE b.name = :business_name AND b.workspace.id = :workspace_id")
     Optional<BusinessRole> findRoleWithNameInWorkspace(@Param("business_name") String business_name, @Param("workspace_id") Integer workspace_id);
 
+    @Query("SELECT r FROM BusinessResponsibility r WHERE r.description = :responsibility_desc AND r.workspace.id = :workspace_id")
+    Optional<BusinessResponsibility> findResponsibilityWithDescriptionInWorkspace(
+            @Param("responsibility_desc")String responsibility_desc,
+            @Param("workspace_id") Integer workspace_id);
 }

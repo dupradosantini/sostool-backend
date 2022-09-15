@@ -1,5 +1,6 @@
 package dupradosantini.sostoolbackend.controllers;
 
+import dupradosantini.sostoolbackend.domain.BusinessResponsibility;
 import dupradosantini.sostoolbackend.domain.BusinessRole;
 import dupradosantini.sostoolbackend.domain.Team;
 import dupradosantini.sostoolbackend.domain.Workspace;
@@ -127,4 +128,31 @@ public class WorkspaceController {
         List<BusinessRole> testList = workspaceService.businessRoleExistsInManyTeams(workspaceId);
         return ResponseEntity.ok().body(testList);
     }
+
+    //RESPONSIBILITY MANAGEMENT ********************************
+
+    //GET BUSINESS-RESPONSIBILITIES GIVEN A WORKSPACE
+    @GetMapping("/{workspaceId}/business-responsibilities")
+    public ResponseEntity<Set<BusinessResponsibility>> getResponsibilitiesInWorkspace(@PathVariable Integer workspaceId){
+        Set<BusinessResponsibility> businessResponsibilitySet = workspaceService.findAllResponsibilities(workspaceId);
+        return ResponseEntity.ok().body(businessResponsibilitySet);
+    }
+
+    //CREATE RESPONSIBILITY GIVEN A WORKSPACE.
+    @PostMapping("/{workspaceId}/business-responsibilities")
+    public ResponseEntity<BusinessResponsibility> createResponsibilityInWorkspace(@PathVariable Integer workspaceId, @RequestBody BusinessResponsibility obj){
+        BusinessResponsibility newBusinessResponsibility = workspaceService.createResponsibility(workspaceId,obj);
+        return ResponseEntity.ok().body(newBusinessResponsibility);
+    }
+
+    //ASSIGN RESPONSIBILITY TO ROLE.
+    @PutMapping("/{workspaceId}/businessroles/{roleId}/responsibilities/{responsibilityId}")
+    public ResponseEntity<Set<BusinessRole>> assignResponsibilityToRole(
+            @PathVariable Integer workspaceId,
+            @PathVariable Integer roleId,
+            @PathVariable Integer responsibilityId){
+        Set<BusinessRole> updatedRoleSet =  workspaceService.assignResponsibilityToRole(workspaceId,roleId,responsibilityId);
+        return ResponseEntity.ok().body(updatedRoleSet);
+    }
+
 }
