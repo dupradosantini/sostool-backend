@@ -185,7 +185,7 @@ public class WorkspaceServiceImpl implements WorkspaceService{
     }
 
     @Override
-    public BusinessResponsibility createResponsibility(Integer workspaceId, BusinessResponsibility obj) {
+    public BusinessResponsibility createResponsibility(Integer workspaceId, BusinessResponsibility obj){
 
         obj.setId(null);
         obj.setWorkspace(this.findById(workspaceId));

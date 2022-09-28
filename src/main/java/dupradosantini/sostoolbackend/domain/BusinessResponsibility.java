@@ -26,7 +26,7 @@ public class BusinessResponsibility implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @Length(max=2000, message = "ModelResponsibility description can have at most 2000 characters")
+    @Length(min=2, max=2000, message = "ModelResponsibility description can have at most 2000 characters")
     private String description;
 
     @ManyToOne(optional = false)
