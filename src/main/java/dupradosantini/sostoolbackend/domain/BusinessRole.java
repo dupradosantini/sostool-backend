@@ -2,6 +2,7 @@ package dupradosantini.sostoolbackend.domain;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.*;
 import org.hibernate.validator.constraints.Length;
 
@@ -46,6 +47,10 @@ public class BusinessRole implements Serializable {
 
     @ManyToMany
     private Set<BusinessResponsibility> roleAssignedResponsibilities;
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "businessRole")
+    @JsonManagedReference(value = "businessRole-assignedMembers")
+    private Set<WorkspaceMember> assignedMembers;
 
     @Override
     public String toString() {

@@ -43,6 +43,10 @@ public class Workspace implements Serializable {
     @JsonManagedReference(value = "workspace-businessResponsibilities")
     private Set<BusinessResponsibility> businessResponsibilities;
 
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "workspace")
+    @JsonManagedReference(value = "workspace-members")
+    private Set<WorkspaceMember> members;
+
     //null description constructor.
     public Workspace(String name) {
         this.name = name;
