@@ -23,8 +23,9 @@ public class WorkspaceMember implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    /*@ManyToOne
-    private User user;*/
+    @ManyToOne(optional = false)
+    @JsonBackReference(value = "appUser-workspaceMember")
+    private AppUser appUser;
 
     @ManyToOne(optional = false)
     @JsonBackReference(value = "businessRole-assignedMembers")

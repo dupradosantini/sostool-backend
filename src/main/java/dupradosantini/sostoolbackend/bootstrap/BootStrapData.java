@@ -1,13 +1,7 @@
 package dupradosantini.sostoolbackend.bootstrap;
 
-import dupradosantini.sostoolbackend.domain.ModelResponsibility;
-import dupradosantini.sostoolbackend.domain.ModelRole;
-import dupradosantini.sostoolbackend.domain.Team;
-import dupradosantini.sostoolbackend.domain.Workspace;
-import dupradosantini.sostoolbackend.repositories.ModelResponsibilityRepository;
-import dupradosantini.sostoolbackend.repositories.ModelRoleRepository;
-import dupradosantini.sostoolbackend.repositories.TeamRepository;
-import dupradosantini.sostoolbackend.repositories.WorkspaceRepository;
+import dupradosantini.sostoolbackend.domain.*;
+import dupradosantini.sostoolbackend.repositories.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
@@ -21,16 +15,18 @@ public class BootStrapData implements CommandLineRunner {
     private final TeamRepository teamRepository;
     private final ModelRoleRepository modelRoleRepository;
     private final ModelResponsibilityRepository modelResponsibilityRepository;
+    private final UserRepository userRepository;
 
     @Autowired
     public BootStrapData(WorkspaceRepository workspaceRepository,
                          TeamRepository teamRepository,
                          ModelRoleRepository modelRoleRepository,
-                         ModelResponsibilityRepository modelResponsibilityRepository) {
+                         ModelResponsibilityRepository modelResponsibilityRepository, UserRepository userRepository) {
         this.workspaceRepository = workspaceRepository;
         this.teamRepository = teamRepository;
         this.modelRoleRepository = modelRoleRepository;
         this.modelResponsibilityRepository = modelResponsibilityRepository;
+        this.userRepository = userRepository;
     }
 
     @Override
@@ -86,6 +82,10 @@ public class BootStrapData implements CommandLineRunner {
 
         modelResponsibilityRepository.saveAll(Arrays.asList(otherResp,r1,r2,r3,r4,r5,r6,r7,r8,r9,r10,r11,r12,r13,r14,r15));
 
+
+        AppUser appUser1 = new AppUser("Luis Eduardo","luis@email.com","senhaforte");
+
+        userRepository.save(appUser1);
 
         System.out.println("Number of workspaces: " + workspaceRepository.count());
 
