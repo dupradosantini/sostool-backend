@@ -7,6 +7,7 @@ import dupradosantini.sostoolbackend.repositories.TeamRepository;
 import dupradosantini.sostoolbackend.repositories.WorkspaceRepository;
 import dupradosantini.sostoolbackend.services.exceptions.BusinessRoleAlreadyExistsException;
 import dupradosantini.sostoolbackend.services.exceptions.ObjectNotFoundException;
+import dupradosantini.sostoolbackend.services.interfaces.WorkspaceService;
 import lombok.extern.slf4j.Slf4j;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,7 +19,7 @@ import java.util.Set;
 
 @Service
 @Slf4j
-public class WorkspaceServiceImpl implements WorkspaceService{
+public class WorkspaceServiceImpl implements WorkspaceService {
 
     private final BusinessRoleRepository businessRoleRepository;
     private final BusinessResponsibilityRepository businessResponsibilityRepository;

@@ -4,7 +4,7 @@ import dupradosantini.sostoolbackend.domain.BusinessResponsibility;
 import dupradosantini.sostoolbackend.domain.BusinessRole;
 import dupradosantini.sostoolbackend.domain.Team;
 import dupradosantini.sostoolbackend.domain.Workspace;
-import dupradosantini.sostoolbackend.services.WorkspaceService;
+import dupradosantini.sostoolbackend.services.interfaces.WorkspaceService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;

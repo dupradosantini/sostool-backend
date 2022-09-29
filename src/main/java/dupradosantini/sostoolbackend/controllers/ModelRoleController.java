@@ -1,12 +1,10 @@
 package dupradosantini.sostoolbackend.controllers;
 
 import dupradosantini.sostoolbackend.domain.ModelRole;
-import dupradosantini.sostoolbackend.services.ModelRoleService;
-import dupradosantini.sostoolbackend.services.ModelRoleServiceImpl;
+import dupradosantini.sostoolbackend.services.interfaces.ModelRoleService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.Banner;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 

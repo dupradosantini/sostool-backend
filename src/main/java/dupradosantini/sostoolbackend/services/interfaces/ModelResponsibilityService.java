@@ -1,4 +1,4 @@
-package dupradosantini.sostoolbackend.services;
+package dupradosantini.sostoolbackend.services.interfaces;
 
 import dupradosantini.sostoolbackend.domain.ModelResponsibility;
 import dupradosantini.sostoolbackend.domain.ModelRole;

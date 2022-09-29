@@ -1,9 +1,9 @@
 package dupradosantini.sostoolbackend.services;
 
 import dupradosantini.sostoolbackend.domain.ModelResponsibility;
-import dupradosantini.sostoolbackend.domain.ModelRole;
 import dupradosantini.sostoolbackend.repositories.ModelResponsibilityRepository;
 import dupradosantini.sostoolbackend.services.exceptions.ObjectNotFoundException;
+import dupradosantini.sostoolbackend.services.interfaces.ModelResponsibilityService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
@@ -12,7 +12,7 @@ import java.util.Optional;
 
 @Service
 @Slf4j
-public class ModelResponsibilityServiceImpl implements ModelResponsibilityService{
+public class ModelResponsibilityServiceImpl implements ModelResponsibilityService {
 
     private final ModelResponsibilityRepository modelResponsibilityRepository;
 

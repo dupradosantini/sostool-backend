@@ -3,6 +3,7 @@ package dupradosantini.sostoolbackend.services;
 import dupradosantini.sostoolbackend.domain.ModelRole;
 import dupradosantini.sostoolbackend.repositories.ModelRoleRepository;
 import dupradosantini.sostoolbackend.services.exceptions.ObjectNotFoundException;
+import dupradosantini.sostoolbackend.services.interfaces.ModelRoleService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -12,7 +13,7 @@ import java.util.Optional;
 
 @Service
 @Slf4j
-public class ModelRoleServiceImpl implements  ModelRoleService {
+public class ModelRoleServiceImpl implements ModelRoleService {
 
     private final ModelRoleRepository modelRoleRepository;
 

@@ -1,9 +1,7 @@
 package dupradosantini.sostoolbackend.controllers;
 
 import dupradosantini.sostoolbackend.domain.ModelResponsibility;
-import dupradosantini.sostoolbackend.domain.ModelRole;
-import dupradosantini.sostoolbackend.services.ModelResponsibilityService;
-import dupradosantini.sostoolbackend.services.ModelRoleService;
+import dupradosantini.sostoolbackend.services.interfaces.ModelResponsibilityService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import org.springframework.beans.factory.annotation.Autowired;
