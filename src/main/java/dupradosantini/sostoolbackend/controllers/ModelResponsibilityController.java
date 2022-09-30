@@ -39,4 +39,10 @@ public class ModelResponsibilityController {
         return ResponseEntity.ok().body(newModelResponsibility);
     }
 
+    @PostMapping("/edit")
+    public ResponseEntity<ModelResponsibility> update(@RequestBody ModelResponsibility obj){
+        ModelResponsibility updatedResp = modelResponsibilityService.update(obj);
+        return ResponseEntity.ok().body(updatedResp);
+    }
+
 }
