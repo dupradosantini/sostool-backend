@@ -246,4 +246,21 @@ public class WorkspaceServiceImpl implements WorkspaceService {
         System.out.println("BusinessRole não existe nesse workspace!");
         return null;
     }
+
+    @Override
+    public Set<BusinessResponsibility> removeResponsibilityOfRole(Integer workspaceId, Integer roleId, Integer responsibilityId) {
+        findById(workspaceId);
+        var role = findRoleById(roleId);
+        var responsibility = findResponsibilityById(responsibilityId);
+        var currentRoleSet = role.getRoleAssignedResponsibilities();
+        if(currentRoleSet.contains(responsibility)){
+            currentRoleSet.remove(responsibility);
+            role.setRoleAssignedResponsibilities(currentRoleSet);
+            businessRoleRepository.save(role);
+            return role.getRoleAssignedResponsibilities();
+        }else{
+            System.out.println("Essa responsibility não está atribuida a esse role.");
+        }
+        return role.getRoleAssignedResponsibilities();
+    }
 }

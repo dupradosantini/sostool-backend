@@ -44,4 +44,6 @@ public interface WorkspaceService {
     BusinessResponsibility createResponsibility(Integer workspaceId, BusinessResponsibility obj);
 
     Set<BusinessRole> assignResponsibilityToRole(Integer workspaceId, Integer roleId, Integer responsibilityId);
+
+    Set<BusinessResponsibility> removeResponsibilityOfRole(Integer workspaceId, Integer roleId, Integer responsibilityId);
 }

@@ -155,4 +155,14 @@ public class WorkspaceController {
         return ResponseEntity.ok().body(updatedRoleSet);
     }
 
+    //REMOVE RESPONSIBILITY FROM ROLE
+    @PutMapping("/{workspaceId}/businessroles/{roleId}/responsibilities/{responsibilityId}/remove")
+    public ResponseEntity<Set<BusinessResponsibility>> removeResponsibilityFromRole(
+            @PathVariable Integer workspaceId,
+            @PathVariable Integer roleId,
+            @PathVariable Integer responsibilityId){
+        Set<BusinessResponsibility> updatedRespSet =  workspaceService.removeResponsibilityOfRole(workspaceId,roleId,responsibilityId);
+        return ResponseEntity.ok().body(updatedRespSet);
+    }
+
 }
