@@ -13,6 +13,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.sql.Date;
+import java.time.Instant;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -27,6 +29,7 @@ public class WorkspaceServiceImpl implements WorkspaceService {
     private final TeamRepository teamRepository;
     private final ModelRoleServiceImpl modelRoleService;
     private final ModelResponsibilityServiceImpl modelResponsibilityService;
+    private final UserServiceImpl userService;
 
     @Autowired
     public WorkspaceServiceImpl(WorkspaceRepository workspaceRepository,
@@ -34,13 +37,14 @@ public class WorkspaceServiceImpl implements WorkspaceService {
                                 BusinessRoleRepository businessRoleRepository,
                                 ModelRoleServiceImpl modelRoleService,
                                 ModelResponsibilityServiceImpl modelResponsibilityService,
-                                BusinessResponsibilityRepository businessResponsibilityRepository) {
+                                BusinessResponsibilityRepository businessResponsibilityRepository, UserServiceImpl userService) {
         this.workspaceRepository = workspaceRepository;
         this.teamRepository = teamRepository;
         this.businessRoleRepository = businessRoleRepository;
         this.modelRoleService = modelRoleService;
         this.modelResponsibilityService = modelResponsibilityService;
         this.businessResponsibilityRepository = businessResponsibilityRepository;
+        this.userService = userService;
     }
 
     @Override
@@ -165,6 +169,12 @@ public class WorkspaceServiceImpl implements WorkspaceService {
     }
 
     @Override
+    public Team getTeamInWorkspace(Integer workspaceId, Integer teamId) {
+        var team = teamRepository.findById(teamId);
+        return team.orElseThrow(() -> new ObjectNotFoundException("Business role not found!!"));
+    }
+
+    @Override
     public List<BusinessRole> businessRoleExistsInManyTeams(Integer workspaceId) {
         this.findById(workspaceId);
         Optional<List<BusinessRole>> optional = workspaceRepository.findRolesInMoreThanOne(workspaceId);
@@ -262,5 +272,34 @@ public class WorkspaceServiceImpl implements WorkspaceService {
             System.out.println("Essa responsibility não está atribuida a esse role.");
         }
         return role.getRoleAssignedResponsibilities();
+    }
+
+
+
+    @Override
+    public Set<AppUser> assignUserToRole(Integer workspaceId, Integer roleId, Integer memberId) throws ObjectNotFoundException {
+        var workspace =findById(workspaceId);
+        var role = findRoleById(roleId);
+        var user = userService.findById(memberId);
+        var userCurrentMemberSet = userService.findUserMemberSet(user,role);
+        if(userCurrentMemberSet.isPresent()){
+            System.out.println("Usuário ja é membro desse role.");
+            return userService.findUsersWithRole(role);
+        }else if(!userService.UserHasRoleInWorkspace(user, workspace)){
+
+            var currentDate = Date.from(Instant.now());
+            var newMember = new WorkspaceMember(user,role,workspace, currentDate);
+            this.userService.createWorkspaceMember(newMember);
+            return userService.findUsersWithRole(role);
+        }
+        System.out.println("Usuário possui cargo não encerrado");
+        throw new ObjectNotFoundException("Usuário ja possui cargo!");
+    }
+
+    @Override
+    public Set<AppUser> findUsersWithRole(Integer workspaceId, Integer roleId) {
+        findById(workspaceId);
+        var role = findRoleById(roleId);
+        return userService.findUsersWithRole(role);
     }
 }

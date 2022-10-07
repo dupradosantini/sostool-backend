@@ -1,9 +1,6 @@
 package dupradosantini.sostoolbackend.controllers;
 
-import dupradosantini.sostoolbackend.domain.BusinessResponsibility;
-import dupradosantini.sostoolbackend.domain.BusinessRole;
-import dupradosantini.sostoolbackend.domain.Team;
-import dupradosantini.sostoolbackend.domain.Workspace;
+import dupradosantini.sostoolbackend.domain.*;
 import dupradosantini.sostoolbackend.services.interfaces.WorkspaceService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -123,6 +120,12 @@ public class WorkspaceController {
         return ResponseEntity.ok().body(updatedTeamSet);
     }
 
+    @GetMapping("/{workspaceId}/teams/{teamId}/roles")
+    public ResponseEntity<Set<BusinessRole>> getRolesInTeam(@PathVariable Integer workspaceId, @PathVariable Integer teamId){
+        var team = workspaceService.getTeamInWorkspace(workspaceId,teamId);
+        return ResponseEntity.ok().body(team.getTeamAssignedRoles());
+    }
+
     @GetMapping("/{workspaceId}/roles-in-many-teams")
     public ResponseEntity<List<BusinessRole>> getRolesInManyTeams(@PathVariable Integer workspaceId){
         List<BusinessRole> testList = workspaceService.businessRoleExistsInManyTeams(workspaceId);
@@ -165,4 +168,21 @@ public class WorkspaceController {
         return ResponseEntity.ok().body(updatedRespSet);
     }
 
+    //Assign member to role
+    @PutMapping("/{workspaceId}/businessroles/{roleId}/member/{memberId}")
+    public ResponseEntity<Set<AppUser>> assignUserToRole(
+            @PathVariable Integer workspaceId,
+            @PathVariable Integer roleId,
+            @PathVariable Integer memberId){
+        Set<AppUser> userSet = workspaceService.assignUserToRole(workspaceId,roleId,memberId);
+        return ResponseEntity.ok().body(userSet);
+    }
+
+    @GetMapping("/{workspaceId}/businessroles/{roleId}/members")
+    public ResponseEntity<Set<AppUser>> getUsersInThisRole(
+            @PathVariable Integer workspaceId,
+            @PathVariable Integer roleId){
+        Set<AppUser> userSet = workspaceService.findUsersWithRole(workspaceId,roleId);
+        return ResponseEntity.ok().body(userSet);
+    }
 }

@@ -1,13 +1,10 @@
 package dupradosantini.sostoolbackend.domain;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.util.Date;
 
@@ -35,9 +32,15 @@ public class WorkspaceMember implements Serializable {
     @JsonBackReference(value = "workspace-members")
     private Workspace workspace;
 
-    @NotEmpty
+    @NotNull
     private Date startDate;
 
     private Date endDate;
 
+    public WorkspaceMember(AppUser appUser, BusinessRole businessRole, Workspace workspace, Date startDate) {
+        this.appUser = appUser;
+        this.businessRole = businessRole;
+        this.workspace = workspace;
+        this.startDate = startDate;
+    }
 }
