@@ -8,7 +8,6 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
-import java.util.Date;
 import java.util.Optional;
 import java.util.Set;
 
@@ -22,5 +21,8 @@ public interface WorkspaceMemberRepository extends JpaRepository<WorkspaceMember
 
     @Query("SELECT a FROM WorkspaceMember a WHERE (a.workspace.id =:workspace_id AND a.appUser.id=:user_id)")
     Set<WorkspaceMember> findUserWithRoleInWorkspace(@Param("workspace_id") Integer workspace_id,@Param("user_id") Integer user_id);
+
+    @Query("SELECT a FROM WorkspaceMember a WHERE (a.appUser.id=:user_id)")
+    Set<WorkspaceMember> findUserRoles(@Param("user_id") Integer user_id);
 
 }

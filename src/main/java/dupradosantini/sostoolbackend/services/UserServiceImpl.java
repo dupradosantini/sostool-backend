@@ -4,6 +4,7 @@ import dupradosantini.sostoolbackend.domain.AppUser;
 import dupradosantini.sostoolbackend.domain.BusinessRole;
 import dupradosantini.sostoolbackend.domain.Workspace;
 import dupradosantini.sostoolbackend.domain.WorkspaceMember;
+import dupradosantini.sostoolbackend.domain.dtos.RoleHistoryDto;
 import dupradosantini.sostoolbackend.repositories.UserRepository;
 import dupradosantini.sostoolbackend.repositories.WorkspaceMemberRepository;
 import dupradosantini.sostoolbackend.services.exceptions.ObjectNotFoundException;
@@ -11,9 +12,7 @@ import dupradosantini.sostoolbackend.services.interfaces.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 
 @Service
 public class UserServiceImpl implements UserService{
@@ -67,5 +66,20 @@ public class UserServiceImpl implements UserService{
             }
         }
         return false;
+    }
+
+    @Override
+    public List<RoleHistoryDto> findUserRoleHistory(Integer userId){
+        this.findById(userId);
+        var roles = workspaceMemberRepository.findUserRoles(userId);
+        var returnList = new ArrayList<RoleHistoryDto>();
+        for( var workspaceMember:roles){
+            RoleHistoryDto item = new RoleHistoryDto(workspaceMember.getBusinessRole(), workspaceMember.getStartDate(), workspaceMember.getEndDate());
+            returnList.add(item);
+        }
+
+        returnList.sort(Comparator.comparing(RoleHistoryDto::getDateStart));
+
+        return returnList;
     }
 }

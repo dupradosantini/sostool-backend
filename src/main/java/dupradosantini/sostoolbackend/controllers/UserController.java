@@ -1,6 +1,7 @@
 package dupradosantini.sostoolbackend.controllers;
 
 import dupradosantini.sostoolbackend.domain.AppUser;
+import dupradosantini.sostoolbackend.domain.dtos.RoleHistoryDto;
 import dupradosantini.sostoolbackend.services.interfaces.UserService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -34,6 +35,12 @@ public class UserController {
     public ResponseEntity<AppUser> createUser(@RequestBody AppUser obj){
         AppUser newAppUser = userService.createUser(obj);
         return ResponseEntity.ok().body(newAppUser);
+    }
+
+    @GetMapping("/{userId}/role-history")
+    public ResponseEntity<List<RoleHistoryDto>> getRoleHistory(@PathVariable Integer userId){
+        List<RoleHistoryDto> returnList = userService.findUserRoleHistory(userId);
+        return ResponseEntity.ok().body(returnList);
     }
 }
 
