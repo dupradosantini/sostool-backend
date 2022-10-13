@@ -7,6 +7,7 @@ import org.hibernate.validator.constraints.Length;
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
 import java.io.Serializable;
+import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 
@@ -46,6 +47,10 @@ public class Workspace implements Serializable {
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "workspace")
     @JsonManagedReference(value = "workspace-members")
     private Set<WorkspaceMember> members;
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "workspace")
+    @JsonManagedReference(value = "workspace-activity")
+    private List<Activity> activities;
 
     //null description constructor.
     public Workspace(String name) {

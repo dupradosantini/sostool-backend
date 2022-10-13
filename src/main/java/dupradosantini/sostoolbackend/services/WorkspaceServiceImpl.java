@@ -58,6 +58,7 @@ public class WorkspaceServiceImpl implements WorkspaceService {
     public Workspace create(Workspace obj) {
         obj.setId(null);
         obj.setTeams(null);
+        //TODO -- Create the four default atcivities and assign them to the new workspace
         return workspaceRepository.save(obj);
     }
 
