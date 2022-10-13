@@ -1,10 +1,7 @@
 package dupradosantini.sostoolbackend.services;
 
 import dupradosantini.sostoolbackend.domain.*;
-import dupradosantini.sostoolbackend.repositories.BusinessResponsibilityRepository;
-import dupradosantini.sostoolbackend.repositories.BusinessRoleRepository;
-import dupradosantini.sostoolbackend.repositories.TeamRepository;
-import dupradosantini.sostoolbackend.repositories.WorkspaceRepository;
+import dupradosantini.sostoolbackend.repositories.*;
 import dupradosantini.sostoolbackend.services.exceptions.BusinessRoleAlreadyExistsException;
 import dupradosantini.sostoolbackend.services.exceptions.ObjectNotFoundException;
 import dupradosantini.sostoolbackend.services.interfaces.WorkspaceService;
@@ -30,6 +27,7 @@ public class WorkspaceServiceImpl implements WorkspaceService {
     private final ModelRoleServiceImpl modelRoleService;
     private final ModelResponsibilityServiceImpl modelResponsibilityService;
     private final UserServiceImpl userService;
+    private final ActivityRepository activityRepository;
 
     @Autowired
     public WorkspaceServiceImpl(WorkspaceRepository workspaceRepository,
@@ -37,7 +35,7 @@ public class WorkspaceServiceImpl implements WorkspaceService {
                                 BusinessRoleRepository businessRoleRepository,
                                 ModelRoleServiceImpl modelRoleService,
                                 ModelResponsibilityServiceImpl modelResponsibilityService,
-                                BusinessResponsibilityRepository businessResponsibilityRepository, UserServiceImpl userService) {
+                                BusinessResponsibilityRepository businessResponsibilityRepository, UserServiceImpl userService, ActivityRepository activityRepository) {
         this.workspaceRepository = workspaceRepository;
         this.teamRepository = teamRepository;
         this.businessRoleRepository = businessRoleRepository;
@@ -45,6 +43,7 @@ public class WorkspaceServiceImpl implements WorkspaceService {
         this.modelResponsibilityService = modelResponsibilityService;
         this.businessResponsibilityRepository = businessResponsibilityRepository;
         this.userService = userService;
+        this.activityRepository = activityRepository;
     }
 
     @Override
@@ -302,5 +301,33 @@ public class WorkspaceServiceImpl implements WorkspaceService {
         findById(workspaceId);
         var role = findRoleById(roleId);
         return userService.findUsersWithRole(role);
+    }
+
+    //Activities methods
+    @Override
+    public Activity findActivityById(Integer activityId) {
+        Optional<Activity> activity = this.activityRepository.findById(activityId);
+        return activity.orElseThrow(() -> new ObjectNotFoundException("Activity not found!"));
+    }
+
+    @Override
+    public List<Activity> findAllActivitiesInWorkspace(Integer workspaceId) {
+        return this.activityRepository.findAll();
+    }
+
+    @Override
+    public Activity createActivity(Integer workspaceId, Activity activityObj) {
+        var workspace = this.findById(workspaceId);
+        activityObj.setId(null);
+        activityObj.setWorkspace(workspace);
+        var savedActivity =  this.activityRepository.save(activityObj);
+
+        //Updating workspace activities list
+        var currentActivities = workspace.getActivities();
+        currentActivities.add(savedActivity);
+        workspace.setActivities(currentActivities);
+        this.workspaceRepository.save(workspace);
+
+        return savedActivity;
     }
 }

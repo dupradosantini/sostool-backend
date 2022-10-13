@@ -49,4 +49,12 @@ public interface WorkspaceService {
     Set<AppUser> assignUserToRole(Integer workspaceId, Integer roleId, Integer memberId);
 
     Set<AppUser> findUsersWithRole(Integer workspaceId, Integer roleId);
+
+    //Activity related operations
+
+    Activity findActivityById(Integer activityId);
+
+    List<Activity> findAllActivitiesInWorkspace(Integer workspaceId);
+
+    Activity createActivity(Integer workspaceId, Activity activityObj);
 }

@@ -185,4 +185,20 @@ public class WorkspaceController {
         Set<AppUser> userSet = workspaceService.findUsersWithRole(workspaceId,roleId);
         return ResponseEntity.ok().body(userSet);
     }
+
+    //Activity related endpoints
+
+    @GetMapping("/{workspaceId}/activities")
+    public ResponseEntity<List<Activity>> getActivitiesInWorkspace(@PathVariable Integer workspaceId){
+        var activities = this.workspaceService.findAllActivitiesInWorkspace(workspaceId);
+        return ResponseEntity.ok().body(activities);
+    }
+
+    @PostMapping("/{workspaceId}/activities")
+    public ResponseEntity<Activity> createNewActivity(
+            @PathVariable Integer workspaceId,
+            @RequestBody Activity activityObj){
+        var createdActivity = this.workspaceService.createActivity(workspaceId,activityObj);
+        return ResponseEntity.ok().body(createdActivity);
+    }
 }

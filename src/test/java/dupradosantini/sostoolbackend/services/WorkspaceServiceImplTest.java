@@ -2,11 +2,7 @@ package dupradosantini.sostoolbackend.services;
 
 import dupradosantini.sostoolbackend.domain.Team;
 import dupradosantini.sostoolbackend.domain.Workspace;
-import dupradosantini.sostoolbackend.repositories.BusinessResponsibilityRepository;
-import dupradosantini.sostoolbackend.repositories.BusinessRoleRepository;
-import dupradosantini.sostoolbackend.repositories.TeamRepository;
-import dupradosantini.sostoolbackend.repositories.WorkspaceRepository;
-import dupradosantini.sostoolbackend.services.interfaces.UserService;
+import dupradosantini.sostoolbackend.repositories.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -48,6 +44,9 @@ class WorkspaceServiceImplTest {
     @Mock
     UserServiceImpl userService;
 
+    @Mock
+    ActivityRepository activityRepository;
+
     @BeforeEach
     void setUp() {
         MockitoAnnotations.openMocks(workspaceRepository);
@@ -55,13 +54,16 @@ class WorkspaceServiceImplTest {
         MockitoAnnotations.openMocks(businessRoleRepository);
         MockitoAnnotations.openMocks(modelRoleService);
         MockitoAnnotations.openMocks(modelResponsibilityService);
+        MockitoAnnotations.openMocks(activityRepository);
         workspaceService = new WorkspaceServiceImpl(
                 workspaceRepository,
                 teamRepository,
                 businessRoleRepository,
                 modelRoleService,
                 modelResponsibilityService,
-                businessResponsibilityRepository, userService);
+                businessResponsibilityRepository,
+                userService,
+                activityRepository);
     }
 
     @Test
