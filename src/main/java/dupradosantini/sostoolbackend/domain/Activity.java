@@ -33,8 +33,8 @@ public class Activity implements Serializable {
     @JsonBackReference(value = "workspace-activity")
     private  Workspace workspace;
 
-    public Activity(String name, Workspace workspace) {
+    public Activity(String name) {
         this.name = name;
-        this.workspace = workspace;
     }
+
 }

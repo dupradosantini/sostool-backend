@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import java.sql.Date;
 import java.time.Instant;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -58,7 +59,18 @@ public class WorkspaceServiceImpl implements WorkspaceService {
         obj.setId(null);
         obj.setTeams(null);
         //TODO -- Create the four default atcivities and assign them to the new workspace
-        return workspaceRepository.save(obj);
+        var savedWorkspace = workspaceRepository.save(obj);
+        var a1 = new Activity("Define SoS Objectives");
+        var a2 = new Activity("Define Capability Objectives");
+        var a3 = new Activity("Define Capability Requirements");
+        var a4 = new Activity("Identify Sources");
+
+        createActivity(savedWorkspace.getId(),a1);
+        createActivity(savedWorkspace.getId(),a2);
+        createActivity(savedWorkspace.getId(),a3);
+        createActivity(savedWorkspace.getId(),a4);
+
+        return this.findById(savedWorkspace.getId());
     }
 
     @Override
@@ -324,6 +336,9 @@ public class WorkspaceServiceImpl implements WorkspaceService {
 
         //Updating workspace activities list
         var currentActivities = workspace.getActivities();
+        if(currentActivities == null) {
+            currentActivities = new ArrayList<>();
+        }
         currentActivities.add(savedActivity);
         workspace.setActivities(currentActivities);
         this.workspaceRepository.save(workspace);
