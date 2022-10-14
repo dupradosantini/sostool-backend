@@ -16,17 +16,19 @@ public class BootStrapData implements CommandLineRunner {
     private final ModelRoleRepository modelRoleRepository;
     private final ModelResponsibilityRepository modelResponsibilityRepository;
     private final UserRepository userRepository;
+    private final ActivityRepository activityRepository;
 
     @Autowired
     public BootStrapData(WorkspaceRepository workspaceRepository,
                          TeamRepository teamRepository,
                          ModelRoleRepository modelRoleRepository,
-                         ModelResponsibilityRepository modelResponsibilityRepository, UserRepository userRepository) {
+                         ModelResponsibilityRepository modelResponsibilityRepository, UserRepository userRepository, ActivityRepository activityRepository) {
         this.workspaceRepository = workspaceRepository;
         this.teamRepository = teamRepository;
         this.modelRoleRepository = modelRoleRepository;
         this.modelResponsibilityRepository = modelResponsibilityRepository;
         this.userRepository = userRepository;
+        this.activityRepository = activityRepository;
     }
 
     @Override
@@ -42,9 +44,33 @@ public class BootStrapData implements CommandLineRunner {
         Team t1w2 = new Team("Governing Body (P2)", w2);
         Team t2w2 = new Team("SoSEngineering (P2)", w2);
 
-
-
         teamRepository.saveAll(Arrays.asList(t1w1,t1w2,t2w1,t2w2));
+
+        var a1 = new Activity("Define SoS Objectives");
+        a1.setWorkspace(w1);
+        var a2 = new Activity("Define Capability Objectives");
+        a2.setWorkspace(w1);
+        var a3 = new Activity("Define Capability Requirements");
+        a3.setWorkspace(w1);
+        var a4 = new Activity("Identify Sources");
+        a4.setWorkspace(w1);
+
+        activityRepository.saveAll(Arrays.asList(a1,a2,a3,a4));
+
+        var a5 = new Activity("Define SoS Objectives");
+        a5.setWorkspace(w2);
+        var a6 = new Activity("Define Capability Objectives");
+        a6.setWorkspace(w2);
+        var a7 = new Activity("Define Capability Requirements");
+        a7.setWorkspace(w2);
+        var a8 = new Activity("Identify Sources");
+        a8.setWorkspace(w2);
+
+        activityRepository.saveAll(Arrays.asList(a5,a6,a7,a8));
+
+
+
+
 
         ModelRole other = new ModelRole("Other", "Some role not already described.");
         //Engineering

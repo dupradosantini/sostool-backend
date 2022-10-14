@@ -324,7 +324,7 @@ public class WorkspaceServiceImpl implements WorkspaceService {
 
     @Override
     public List<Activity> findAllActivitiesInWorkspace(Integer workspaceId) {
-        return this.activityRepository.findAll();
+        return this.activityRepository.findActivitiesByWorkspaceId(workspaceId);
     }
 
     @Override
