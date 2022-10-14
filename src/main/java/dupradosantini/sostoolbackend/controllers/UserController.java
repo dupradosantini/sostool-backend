@@ -8,6 +8,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Set;
 
 @CrossOrigin("*")
 @Controller
@@ -41,6 +42,12 @@ public class UserController {
     public ResponseEntity<List<RoleHistoryDto>> getRoleHistory(@PathVariable Integer userId){
         List<RoleHistoryDto> returnList = userService.findUserRoleHistory(userId);
         return ResponseEntity.ok().body(returnList);
+    }
+
+    @GetMapping("/{workspaceId}/current-members")
+    public ResponseEntity<Set<AppUser>> getCurrentWorkspaceMembers(@PathVariable Integer workspaceId){
+        var users = this.userService.findCurrentWorkspaceMembers(workspaceId);
+        return ResponseEntity.ok().body(users);
     }
 }
 

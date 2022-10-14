@@ -4,6 +4,7 @@ import dupradosantini.sostoolbackend.domain.AppUser;
 import dupradosantini.sostoolbackend.domain.dtos.RoleHistoryDto;
 
 import java.util.List;
+import java.util.Set;
 
 public interface UserService {
 
@@ -14,4 +15,6 @@ public interface UserService {
     AppUser createUser(AppUser appUserObj);
 
     List<RoleHistoryDto> findUserRoleHistory(Integer userId);
+
+    Set<AppUser> findCurrentWorkspaceMembers(Integer workspaceId);
 }

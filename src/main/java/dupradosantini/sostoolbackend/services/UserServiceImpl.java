@@ -82,4 +82,9 @@ public class UserServiceImpl implements UserService{
 
         return returnList;
     }
+
+    @Override
+    public Set<AppUser> findCurrentWorkspaceMembers(Integer workspaceId) {
+        return this.workspaceMemberRepository.findCurrentUsersInWorkspace(workspaceId);
+    }
 }
