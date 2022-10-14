@@ -57,4 +57,6 @@ public interface WorkspaceService {
     List<Activity> findAllActivitiesInWorkspace(Integer workspaceId);
 
     Activity createActivity(Integer workspaceId, Activity activityObj);
+
+    Activity updateActivity(Integer activityId, Activity obj);
 }

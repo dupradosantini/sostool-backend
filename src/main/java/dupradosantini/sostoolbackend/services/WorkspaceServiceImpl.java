@@ -345,4 +345,11 @@ public class WorkspaceServiceImpl implements WorkspaceService {
 
         return savedActivity;
     }
+
+    @Override
+    public Activity updateActivity(Integer activityId, Activity obj) {
+        var currentObj = findActivityById(activityId);
+        currentObj.setDescription(obj.getDescription());
+        return  activityRepository.save(currentObj);
+    }
 }
