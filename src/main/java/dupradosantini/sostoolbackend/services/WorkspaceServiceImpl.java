@@ -158,11 +158,11 @@ public class WorkspaceServiceImpl implements WorkspaceService {
                     this.teamRepository.save(actual);
                     return this.findTeams(workspaceId);
                 }else{
-                    System.out.println("Esse role não existe no mesmo workspace desse time.");
+                    System.out.println("This role does not exist in the same workspace as this team!");
                 }
             }
         }
-        System.out.println("Time não existe nesse workspace!");
+        System.out.println("Teams does not exist in this workspace!");
         return null;
     }
 
@@ -330,6 +330,7 @@ public class WorkspaceServiceImpl implements WorkspaceService {
         var workspace = this.findById(workspaceId);
         activityObj.setId(null);
         activityObj.setWorkspace(workspace);
+        activityObj.setState(ActivityState.NOT_STARTED);
         var savedActivity =  this.activityRepository.save(activityObj);
 
         //Updating workspace activities list
@@ -348,6 +349,7 @@ public class WorkspaceServiceImpl implements WorkspaceService {
     public Activity updateActivity(Integer activityId, Activity obj) {
         var currentObj = findActivityById(activityId);
         currentObj.setDescription(obj.getDescription());
+        currentObj.setState(obj.getState());
         return  activityRepository.save(currentObj);
     }
 

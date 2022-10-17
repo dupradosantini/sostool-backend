@@ -39,8 +39,12 @@ public class Activity implements Serializable {
     @JsonManagedReference(value = "activity-members")
     private Set<WorkspaceMember> workspaceMember;
 
+    @Enumerated(EnumType.STRING)
+    private ActivityState state;
+
     public Activity(String name) {
         this.name = name;
+        this.state = ActivityState.NOT_STARTED;
     }
 
 }
