@@ -32,6 +32,10 @@ public class WorkspaceMember implements Serializable {
     @JsonBackReference(value = "workspace-members")
     private Workspace workspace;
 
+    @ManyToOne
+    @JsonBackReference(value = "activity-members")
+    private Activity activity;
+
     @NotNull
     private Date startDate;
 

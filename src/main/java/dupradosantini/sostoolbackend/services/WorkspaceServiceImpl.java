@@ -7,15 +7,13 @@ import dupradosantini.sostoolbackend.services.exceptions.ObjectNotFoundException
 import dupradosantini.sostoolbackend.services.interfaces.WorkspaceService;
 import lombok.extern.slf4j.Slf4j;
 
+import org.hibernate.jdbc.Work;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.sql.Date;
 import java.time.Instant;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 
 @Service
 @Slf4j
@@ -351,5 +349,33 @@ public class WorkspaceServiceImpl implements WorkspaceService {
         var currentObj = findActivityById(activityId);
         currentObj.setDescription(obj.getDescription());
         return  activityRepository.save(currentObj);
+    }
+
+    @Override
+    public Activity addMembersToActivity(Integer activityId, Set<AppUser> users) {
+        var activity = this.findActivityById(activityId);
+        var workspaceMembers = userService.findCurrentWorkspaceMembers(activity.getWorkspace().getId());
+        Set<WorkspaceMember> filteredSet = new HashSet<>();
+        for(var user:users){
+            for(var wMember:workspaceMembers){
+                if(wMember.getAppUser().getId().equals(user.getId())){
+                    filteredSet.add(wMember);
+                    wMember.setActivity(activity);
+                }
+            }
+        }
+        activity.setWorkspaceMember(filteredSet);
+        return activityRepository.save(activity);
+    }
+
+    @Override
+    public Set<AppUser> getUsersInActivity(Integer activityId) {
+        var members = this.activityRepository.findMembersInActivity(activityId);
+        Set<AppUser> users = new HashSet<>();
+        for(var m:members){
+            users.add(m.getAppUser());
+            System.out.println(m.getAppUser().getName());
+        }
+        return users;
     }
 }

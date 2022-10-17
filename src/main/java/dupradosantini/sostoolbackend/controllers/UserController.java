@@ -46,7 +46,7 @@ public class UserController {
 
     @GetMapping("/{workspaceId}/current-members")
     public ResponseEntity<Set<AppUser>> getCurrentWorkspaceMembers(@PathVariable Integer workspaceId){
-        var users = this.userService.findCurrentWorkspaceMembers(workspaceId);
+        var users = this.userService.findCurrentWorkspaceUsers(workspaceId);
         return ResponseEntity.ok().body(users);
     }
 }

@@ -84,7 +84,11 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
-    public Set<AppUser> findCurrentWorkspaceMembers(Integer workspaceId) {
+    public Set<AppUser> findCurrentWorkspaceUsers(Integer workspaceId) {
         return this.workspaceMemberRepository.findCurrentUsersInWorkspace(workspaceId);
+    }
+
+    public Set<WorkspaceMember> findCurrentWorkspaceMembers(Integer workspaceId) {
+        return this.workspaceMemberRepository.findCurrentWorkspaceMembersInWorkspace(workspaceId);
     }
 }

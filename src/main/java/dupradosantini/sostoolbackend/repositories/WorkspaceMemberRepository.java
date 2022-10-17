@@ -28,4 +28,7 @@ public interface WorkspaceMemberRepository extends JpaRepository<WorkspaceMember
     @Query("SELECT a.appUser FROM WorkspaceMember a WHERE (a.workspace.id =:workspace_id) AND (a.endDate IS null)")
     Set<AppUser> findCurrentUsersInWorkspace(@Param("workspace_id") Integer workspace_id);
 
+    @Query("SELECT a FROM WorkspaceMember a WHERE (a.workspace.id =:workspace_id) AND (a.endDate IS null)")
+    Set<WorkspaceMember> findCurrentWorkspaceMembersInWorkspace(@Param("workspace_id") Integer workspace_id);
+
 }

@@ -59,4 +59,8 @@ public interface WorkspaceService {
     Activity createActivity(Integer workspaceId, Activity activityObj);
 
     Activity updateActivity(Integer activityId, Activity obj);
+
+    Activity addMembersToActivity(Integer activityId, Set<AppUser> users);
+
+    Set<AppUser> getUsersInActivity(Integer activityId);
 }
