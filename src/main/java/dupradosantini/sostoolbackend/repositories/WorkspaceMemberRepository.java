@@ -1,7 +1,6 @@
 package dupradosantini.sostoolbackend.repositories;
 
 import dupradosantini.sostoolbackend.domain.AppUser;
-import dupradosantini.sostoolbackend.domain.BusinessRole;
 import dupradosantini.sostoolbackend.domain.WorkspaceMember;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -14,9 +13,10 @@ import java.util.Set;
 @Repository
 public interface WorkspaceMemberRepository extends JpaRepository<WorkspaceMember,Integer> {
 
-    Optional<WorkspaceMember> findWorkspaceMemberByAppUserAndBusinessRole(AppUser user, BusinessRole businessRole);
+    @Query("SELECT wm FROM WorkspaceMember wm WHERE (wm.appUser.id =:userId) AND (wm.businessRole.id=:businessRoleId) AND (wm.endDate IS NULL)")
+    Optional<WorkspaceMember> findWorkspaceMemberByAppUserAndBusinessRole(@Param("userId")Integer userId, @Param("businessRoleId")Integer businessRoleId);
 
-    @Query("SELECT a.appUser FROM WorkspaceMember a WHERE a.businessRole.id =:role_id")
+    @Query("SELECT a.appUser FROM WorkspaceMember a WHERE a.businessRole.id =:role_id AND (a.endDate IS null)")
     Set<AppUser> findUsersWithRole(@Param("role_id") Integer role_id);
 
     @Query("SELECT a FROM WorkspaceMember a WHERE (a.workspace.id =:workspace_id AND a.appUser.id=:user_id)")

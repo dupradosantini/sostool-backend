@@ -45,7 +45,7 @@ public class UserServiceImpl implements UserService{
     }
 
     public Optional<WorkspaceMember> findUserMemberSet(AppUser user, BusinessRole businessRole){
-       return workspaceMemberRepository.findWorkspaceMemberByAppUserAndBusinessRole(user, businessRole);
+       return workspaceMemberRepository.findWorkspaceMemberByAppUserAndBusinessRole(user.getId(), businessRole.getId());
     }
 
     public WorkspaceMember createWorkspaceMember(WorkspaceMember workspaceMember){
@@ -90,5 +90,9 @@ public class UserServiceImpl implements UserService{
 
     public Set<WorkspaceMember> findCurrentWorkspaceMembers(Integer workspaceId) {
         return this.workspaceMemberRepository.findCurrentWorkspaceMembersInWorkspace(workspaceId);
+    }
+
+    public WorkspaceMember saveWorkspaceMember(WorkspaceMember workspaceMember){
+        return this.workspaceMemberRepository.save(workspaceMember);
     }
 }

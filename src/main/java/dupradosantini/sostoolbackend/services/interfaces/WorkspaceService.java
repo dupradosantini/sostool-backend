@@ -63,4 +63,6 @@ public interface WorkspaceService {
     Activity addMembersToActivity(Integer activityId, Set<AppUser> users);
 
     Set<AppUser> getUsersInActivity(Integer activityId);
+
+    Set<AppUser> removeUserFromRole(Integer workspaceId, Integer roleId, AppUser userObj);
 }

@@ -44,7 +44,7 @@ public class WorkspaceController {
         return ResponseEntity.ok().body(obj);
     }
 
-    //FIND ALL METHOD //TODO - PAGING and Maybe DTOs for Swagger consistency
+    //FIND ALL METHOD
     @Operation(summary = "Fetches all the Workspaces available!")
     @ApiResponse(responseCode = "200", description = "List of all workspaces retrieved")
     @GetMapping
@@ -175,6 +175,16 @@ public class WorkspaceController {
             @PathVariable Integer roleId,
             @PathVariable Integer memberId){
         Set<AppUser> userSet = workspaceService.assignUserToRole(workspaceId,roleId,memberId);
+        return ResponseEntity.ok().body(userSet);
+    }
+
+    //Remove member from role
+    @PutMapping("/{workspaceId}/businessroles/{roleId}/member-remove")
+    public ResponseEntity<Set<AppUser>> removeUserFromRole(
+            @PathVariable Integer workspaceId,
+            @PathVariable Integer roleId,
+            @RequestBody AppUser userObj){
+        Set<AppUser> userSet = workspaceService.removeUserFromRole(workspaceId,roleId,userObj);
         return ResponseEntity.ok().body(userSet);
     }
 

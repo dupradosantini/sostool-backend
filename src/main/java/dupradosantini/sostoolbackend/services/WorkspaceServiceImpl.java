@@ -56,7 +56,6 @@ public class WorkspaceServiceImpl implements WorkspaceService {
     public Workspace create(Workspace obj) {
         obj.setId(null);
         obj.setTeams(null);
-        //TODO -- Create the four default atcivities and assign them to the new workspace
         var savedWorkspace = workspaceRepository.save(obj);
         var a1 = new Activity("Define SoS Objectives");
         var a2 = new Activity("Define Capability Objectives");
@@ -284,7 +283,20 @@ public class WorkspaceServiceImpl implements WorkspaceService {
         return role.getRoleAssignedResponsibilities();
     }
 
-
+    @Override
+    public Set<AppUser> removeUserFromRole(Integer workspaceId, Integer roleId, AppUser userObj) {
+        var workspace = findById(workspaceId);
+        var role = findRoleById(roleId);
+        var workspaceMembers = role.getAssignedMembers();
+        for(var w:workspaceMembers){
+            var appUser = w.getAppUser();
+            if(appUser.getId().equals(userObj.getId()) && w.getEndDate()==null){
+                w.setEndDate(java.util.Date.from(Instant.now()));
+                this.userService.saveWorkspaceMember(w);
+            }
+        }
+        return findUsersWithRole(workspaceId,roleId);
+    }
 
     @Override
     public Set<AppUser> assignUserToRole(Integer workspaceId, Integer roleId, Integer memberId) throws ObjectNotFoundException {
