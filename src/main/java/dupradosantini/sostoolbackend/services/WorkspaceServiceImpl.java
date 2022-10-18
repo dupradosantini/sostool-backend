@@ -362,7 +362,9 @@ public class WorkspaceServiceImpl implements WorkspaceService {
             for(var wMember:workspaceMembers){
                 if(wMember.getAppUser().getId().equals(user.getId())){
                     filteredSet.add(wMember);
-                    wMember.setActivity(activity);
+                    var memberActivitySet = wMember.getActivities();
+                    memberActivitySet.add(activity);
+                    wMember.setActivities(memberActivitySet);
                 }
             }
         }
@@ -376,7 +378,6 @@ public class WorkspaceServiceImpl implements WorkspaceService {
         Set<AppUser> users = new HashSet<>();
         for(var m:members){
             users.add(m.getAppUser());
-            System.out.println(m.getAppUser().getName());
         }
         return users;
     }

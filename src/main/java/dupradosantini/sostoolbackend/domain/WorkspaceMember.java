@@ -7,6 +7,7 @@ import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.util.Date;
+import java.util.Set;
 
 @Entity
 @Getter
@@ -32,9 +33,8 @@ public class WorkspaceMember implements Serializable {
     @JsonBackReference(value = "workspace-members")
     private Workspace workspace;
 
-    @ManyToOne
-    @JsonBackReference(value = "activity-members")
-    private Activity activity;
+    @ManyToMany
+    private Set<Activity> activities;
 
     @NotNull
     private Date startDate;

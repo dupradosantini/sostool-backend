@@ -1,7 +1,7 @@
 package dupradosantini.sostoolbackend.domain;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -35,8 +35,8 @@ public class Activity implements Serializable {
     @JsonBackReference(value = "workspace-activity")
     private  Workspace workspace;
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "activity")
-    @JsonManagedReference(value = "activity-members")
+    @ManyToMany
+    @JsonIgnore
     private Set<WorkspaceMember> workspaceMember;
 
     @Enumerated(EnumType.STRING)

@@ -23,7 +23,7 @@ public interface WorkspaceRepository extends JpaRepository<Workspace, Integer> {
     @Query("SELECT t FROM Team t WHERE t.workspace.id = :workspace_id AND t.id = :team_id")
     Optional<Team> findSingleTeam(@Param("workspace_id") Integer workspace_id, @Param("team_id") Integer team_id);
 
-    @Query("SELECT b FROM BusinessRole b WHERE b.teams.size > 1 AND b.workspace.id = :workspace_id")
+    @Query("SELECT b FROM BusinessRole b WHERE size(b.teams) > 1 AND b.workspace.id = :workspace_id")
     Optional<List<BusinessRole>> findRolesInMoreThanOne(@Param("workspace_id") Integer workspace_id);
 
     @Query("SELECT b FROM BusinessRole b WHERE b.name = :business_name AND b.workspace.id = :workspace_id")
